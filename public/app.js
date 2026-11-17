@@ -1,6 +1,7 @@
 /**
  * Allo Innoware - Operations Control Tower & Task Engine
  * Advanced Client Application Logic
+ * Modeled after https://alloinnoware.com/ Brand Identity
  * Developed by 4th-Year B.Tech CSE (AI & ML) Student
  */
 
@@ -24,15 +25,17 @@
   const DEFAULT_TASKS = [
     {
       taskId: 'TSK-001',
-      taskName: 'Daily Operations Update',
+      taskName: 'Daily Operations Update (Borosilicate Warehouse)',
       assignedTo: 'Employee A',
       assignedEmail: 'employee.a@alloinnoware.com',
       frequency: 'Daily',
       frequencyDays: 1,
+      category: 'Storage & Bakeware Dispatch',
+      productModel: 'Allo FoodSafe Borosilicate Glass Dishes & Bowls',
       startDate: getTodayString(0),
       dueDate: getTodayString(0),
       cutoffTime: '18:00',
-      proofRequired: 'WhatsApp Update Summary',
+      proofRequired: 'WhatsApp Dispatch Summary',
       status: 'Pending',
       active: true,
       cycleNumber: 1,
@@ -44,11 +47,13 @@
     },
     {
       taskId: 'TSK-002',
-      taskName: 'Portal Task A',
+      taskName: 'Portal Task A (Triply Pressure Cooker Inventory)',
       assignedTo: 'Employee B',
       assignedEmail: 'employee.b@alloinnoware.com',
       frequency: '7 Days',
       frequencyDays: 7,
+      category: 'Triply Cookware Cadence',
+      productModel: 'Allo CookSafe 2L Triply Stainless Steel Pressure Cooker',
       startDate: getTodayString(0),
       dueDate: getTodayString(7),
       cutoffTime: '18:00',
@@ -64,11 +69,13 @@
     },
     {
       taskId: 'TSK-003',
-      taskName: 'Portal Task B',
+      taskName: 'Portal Task B (Glass Container Reconciliation)',
       assignedTo: 'Employee C',
       assignedEmail: 'employee.c@alloinnoware.com',
       frequency: '15 Days',
       frequencyDays: 15,
+      category: 'Lunch Box & Container Cadence',
+      productModel: 'Allo Break-Free Detachable Lock Glass Containers',
       startDate: getTodayString(0),
       dueDate: getTodayString(15),
       cutoffTime: '18:00',
@@ -84,11 +91,13 @@
     },
     {
       taskId: 'TSK-004',
-      taskName: 'Portal Task C',
+      taskName: 'Portal Task C (GST Filing & Financial Audit)',
       assignedTo: 'Employee D',
       assignedEmail: 'employee.d@alloinnoware.com',
       frequency: '30 Days',
       frequencyDays: 30,
+      category: 'Founder & Finance Cadence',
+      productModel: 'Allo CookSafe Triply Cookware Sets & Monthly Audit',
       startDate: getTodayString(0),
       dueDate: getTodayString(30),
       cutoffTime: '18:00',
@@ -121,16 +130,17 @@
     notificationLogs: [],
     settings: { ...DEFAULT_SETTINGS },
     selectedEmployeeFilter: 'All',
-    searchQuery: ''
+    searchQuery: '',
+    activeView: 'cards' // 'cards' or 'table'
   };
 
   // --- LocalStorage Persistence ---
   function loadState() {
     try {
-      const storedTasks = localStorage.getItem('allo_ops_tasks');
-      const storedLogs = localStorage.getItem('allo_ops_completions');
-      const storedNotifs = localStorage.getItem('allo_ops_notifs');
-      const storedSettings = localStorage.getItem('allo_ops_settings');
+      const storedTasks = localStorage.getItem('allo_ops_tasks_v2');
+      const storedLogs = localStorage.getItem('allo_ops_completions_v2');
+      const storedNotifs = localStorage.getItem('allo_ops_notifs_v2');
+      const storedSettings = localStorage.getItem('allo_ops_settings_v2');
 
       state.tasks = storedTasks ? JSON.parse(storedTasks) : JSON.parse(JSON.stringify(DEFAULT_TASKS));
       state.completionLogs = storedLogs ? JSON.parse(storedLogs) : [];
@@ -147,10 +157,10 @@
 
   function saveState() {
     try {
-      localStorage.setItem('allo_ops_tasks', JSON.stringify(state.tasks));
-      localStorage.setItem('allo_ops_completions', JSON.stringify(state.completionLogs));
-      localStorage.setItem('allo_ops_notifs', JSON.stringify(state.notificationLogs));
-      localStorage.setItem('allo_ops_settings', JSON.stringify(state.settings));
+      localStorage.setItem('allo_ops_tasks_v2', JSON.stringify(state.tasks));
+      localStorage.setItem('allo_ops_completions_v2', JSON.stringify(state.completionLogs));
+      localStorage.setItem('allo_ops_notifs_v2', JSON.stringify(state.notificationLogs));
+      localStorage.setItem('allo_ops_settings_v2', JSON.stringify(state.settings));
     } catch (e) {
       console.error('Error saving state:', e);
     }
@@ -165,7 +175,7 @@
     toast.classList.add('show');
     setTimeout(() => {
       toast.classList.remove('show');
-    }, 3200);
+    }, 3400);
   }
 
   // --- Live 18:00 Cutoff Countdown Timer ---
@@ -179,7 +189,6 @@
 
     let diff = target - now;
     if (diff < 0) {
-      // Past today's cutoff -> time remaining until tomorrow's cutoff
       target.setDate(target.getDate() + 1);
       diff = target - now;
     }
@@ -199,7 +208,7 @@
 
     if (frequency === 'Daily') {
       nextDate.setDate(nextDate.getDate() + 1);
-      // Skip Sunday
+      // Skip Sunday (Business Rule)
       if (nextDate.getDay() === 0) {
         nextDate.setDate(nextDate.getDate() + 1);
       }
@@ -223,7 +232,7 @@
 
     const trimmedProof = (proofInput || '').trim();
     if (!trimmedProof) {
-      alert(`⚠️ Proof Required: Please enter the Ticket ID or WhatsApp update verification for ${task.taskName}.`);
+      alert(`⚠️ Proof Required: Please enter the Ticket ID or WhatsApp update verification for "${task.taskName}".`);
       return false;
     }
 
@@ -264,7 +273,7 @@
 
     saveState();
     renderAll();
-    showToast(`✅ ${taskId} (${task.taskName}) completed! Next cycle scheduled for ${nextDueDate}.`);
+    showToast(`✅ ${taskId} (${task.taskName}) completed! Next cycle #${nextCycleNum} scheduled for ${nextDueDate}.`);
     return true;
   }
 
@@ -434,6 +443,10 @@
     document.getElementById('badgeOverdueCount').textContent = overdueCount + escalatedCount;
     document.getElementById('badgeNotifCount').textContent = state.notificationLogs.length;
 
+    // Hero stats
+    const heroActiveElem = document.getElementById('heroActiveVal');
+    if (heroActiveElem) heroActiveElem.textContent = totalActive;
+
     const rateElem = document.getElementById('statCompletedRate');
     if (rateElem) {
       const rate = state.completionLogs.length > 0 ? '100% Audit Verified' : 'Awaiting Completion';
@@ -441,10 +454,13 @@
     }
   }
 
+  // --- Render Employee Console (Cards & Table) ---
   function renderEmployeeConsole() {
+    const cardsContainer = document.getElementById('employeeCardsContainer');
     const tbody = document.getElementById('employeeReportBody');
-    if (!tbody) return;
+    if (!cardsContainer || !tbody) return;
 
+    cardsContainer.innerHTML = '';
     tbody.innerHTML = '';
     const todayStr = getTodayString(0);
 
@@ -463,6 +479,12 @@
     });
 
     if (filtered.length === 0) {
+      const emptyMsg = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 36px; background: #ffffff; border-radius: 8px; border: 1px dashed var(--allo-border);">
+          <p style="color: var(--allo-text-muted); font-size: 13px;">No active tasks matching current filter or search criteria.</p>
+        </div>
+      `;
+      cardsContainer.innerHTML = emptyMsg;
       tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#94a3b8; padding:24px;">No active tasks matching current filter or search criteria.</td></tr>';
       return;
     }
@@ -474,16 +496,76 @@
       }
 
       let statusBadge = `<span class="badge badge-pending">Pending</span>`;
-      if (displayStatus === 'Overdue') statusBadge = `<span class="badge badge-overdue">⚠️ Overdue</span>`;
-      if (displayStatus === 'Escalated') statusBadge = `<span class="badge badge-escalated">🚨 Escalated</span>`;
-      if (displayStatus === 'Completed') statusBadge = `<span class="badge badge-completed">✓ Completed</span>`;
+      let statusTagClass = 'status-tag-pending';
+      let statusTagText = 'Pending Action';
+
+      if (displayStatus === 'Overdue') {
+        statusBadge = `<span class="badge badge-overdue">⚠️ Overdue</span>`;
+        statusTagClass = 'status-tag-overdue';
+        statusTagText = '⚠️ Overdue';
+      } else if (displayStatus === 'Escalated') {
+        statusBadge = `<span class="badge badge-escalated">🚨 Escalated</span>`;
+        statusTagClass = 'status-tag-escalated';
+        statusTagText = '🚨 Escalated';
+      } else if (displayStatus === 'Completed') {
+        statusBadge = `<span class="badge badge-completed">✓ Completed</span>`;
+        statusTagClass = 'status-tag-completed';
+        statusTagText = '✓ Completed';
+      }
 
       const isWaived = t.managerAck === 'Waived / 24h Extension';
       const isDaily = t.frequency === 'Daily';
       const placeholder = isDaily
-        ? 'e.g. WA-1730-OPS-OK or update summary'
-        : 'e.g. TICKET-4029 or portal link';
+        ? 'e.g. WA-1730-Borosilicate-Dispatched-184Sets'
+        : 'e.g. TICKET-4029 or portal resolution';
 
+      // Cadence Tag (Matches SALE 35% badge style in Image 4)
+      let cadenceTag = 'DAILY CADENCE';
+      if (t.frequency === '7 Days') cadenceTag = 'EVERY 7 DAYS';
+      if (t.frequency === '15 Days') cadenceTag = 'EVERY 15 DAYS';
+      if (t.frequency === '30 Days') cadenceTag = 'EVERY 30 DAYS';
+
+      // 1. Render Product Task Card (Matches Image 4)
+      const card = document.createElement('div');
+      card.className = 'product-task-card';
+      card.innerHTML = `
+        <div class="product-card-top-strip">
+          <span class="sale-tag-badge">${cadenceTag}</span>
+          <span class="status-tag-badge ${statusTagClass}">${statusTagText}</span>
+        </div>
+
+        <div class="product-card-body">
+          <span class="product-card-category">${t.category || 'Allo Operations Cadence'}</span>
+          <h3 class="product-card-title">${t.taskName}</h3>
+
+          <div class="product-meta-row">
+            <span class="product-meta-item">Assignee: <strong>${t.assignedTo}</strong></span>
+            <span class="product-meta-item">Cycle: <span class="badge-code">${t.cycleId}</span></span>
+            <span class="product-meta-item">Due: <strong style="${t.dueDate <= todayStr ? 'color:var(--allo-red);' : ''}">${t.dueDate}</strong></span>
+            ${isWaived ? '<span class="product-meta-item" style="color:var(--allo-green-dark); font-weight:700;">(24h Waiver Active)</span>' : ''}
+          </div>
+
+          <div class="product-price-row">
+            <span class="product-current-price">Cycle Iteration #${t.cycleNumber}</span>
+            <span class="product-mrp-price">Cutoff: 18:00 IST</span>
+          </div>
+
+          <div class="product-proof-input-wrap">
+            <label class="product-proof-label">Required Verification: ${t.proofRequired}</label>
+            <input type="text" class="product-proof-input" id="card_input_${t.taskId}" placeholder="${placeholder}">
+          </div>
+
+          <button class="btn-add-to-cart btn-card-complete" data-taskid="${t.taskId}">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+              <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+            </svg>
+            COMPLETE &amp; AUTO-RENEW CYCLE
+          </button>
+        </div>
+      `;
+      cardsContainer.appendChild(card);
+
+      // 2. Render Table Row (Alternative spreadsheet view)
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td style="font-weight:700; color:#1e293b;">${t.taskId}</td>
@@ -503,7 +585,7 @@
           <input type="text" class="input-table" id="input_proof_${t.taskId}" placeholder="${placeholder}">
         </td>
         <td>
-          <button class="btn btn-primary btn-sm btn-mark-complete" data-taskid="${t.taskId}">
+          <button class="btn btn-allo-green btn-sm btn-mark-complete" data-taskid="${t.taskId}">
             ✓ Complete
           </button>
         </td>
@@ -511,7 +593,17 @@
       tbody.appendChild(tr);
     });
 
-    // Attach click events to all complete buttons
+    // Attach click events to Card Complete buttons
+    cardsContainer.querySelectorAll('.btn-card-complete').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const tid = this.getAttribute('data-taskid');
+        const inputElem = document.getElementById('card_input_' + tid);
+        const proofVal = inputElem ? inputElem.value : '';
+        completeTask(tid, proofVal);
+      });
+    });
+
+    // Attach click events to Table Complete buttons
     tbody.querySelectorAll('.btn-mark-complete').forEach(btn => {
       btn.addEventListener('click', function () {
         const tid = this.getAttribute('data-taskid');
@@ -651,7 +743,7 @@
         <td style="color:#475569; font-size:11px;">${n.reason}</td>
         <td><span class="badge badge-pending">${n.status}</span></td>
         <td>
-          <button class="btn btn-sm btn-view-email" data-index="${idx}">
+          <button class="btn btn-sm btn-subtle btn-view-email" data-index="${idx}">
             👁 Preview Email
           </button>
         </td>
@@ -721,7 +813,7 @@
             <small style="color:#ffe4e6;">Critical SLA Breach: Unresolved >24 hours past manager alert</small>
           </div>
           <div style="padding:18px; font-size:13px; color:#263238;">
-            <p><strong style="color:#0f172a;">To:</strong> ${notification.recipient} (Founder's Office & COO)</p>
+            <p><strong style="color:#0f172a;">To:</strong> ${notification.recipient} (Founder's Office &amp; COO)</p>
             <p><strong style="color:#0f172a;">Task:</strong> ${notification.taskName} (Cycle: <code>${notification.cycleId}</code>)</p>
             <p><strong style="color:#0f172a;">Reason:</strong> ${notification.reason}</p>
             <p><strong style="color:#0f172a;">Logged Timestamp:</strong> ${notification.timestamp}</p>
@@ -837,12 +929,12 @@
 
       // Test 2: Single-point completion
       try {
-        const pendingInput = document.querySelector('#employeeReportBody input');
-        const pendingBtn = document.querySelector('.btn-mark-complete');
+        const cardCompleteBtn = document.querySelector('.btn-card-complete');
+        const pendingInput = document.querySelector('.product-proof-input');
         results.push({
           num: 2,
           name: 'Test 2: Single-Point Completion Console',
-          pass: !!pendingInput && !!pendingBtn,
+          pass: !!cardCompleteBtn && !!pendingInput,
           details: 'Verified that employees can input Ticket ID / WhatsApp verification and complete tasks in one unified view without multi-sheet navigation.'
         });
       } catch (e) {
@@ -983,7 +1075,7 @@
 
   // --- Attach Event Listeners ---
   function setupEvents() {
-    // Tab Switching (supports both .nav-tab-btn and .nav-tab)
+    // 1. Tab Navigation Switching
     document.querySelectorAll('.nav-tab-btn, .nav-tab').forEach(tab => {
       tab.addEventListener('click', function () {
         document.querySelectorAll('.nav-tab-btn, .nav-tab').forEach(t => t.classList.remove('active'));
@@ -996,12 +1088,36 @@
       });
     });
 
-    // Employee Filter Pills (supports both .allo-pill-btn and .filter-btn)
+    // 2. View Toggle (Cards vs Table)
+    const btnCards = document.getElementById('btnViewCards');
+    const btnTable = document.getElementById('btnViewTable');
+    const cardsWrap = document.getElementById('employeeCardsContainer');
+    const tableWrap = document.getElementById('employeeTableContainer');
+
+    if (btnCards && btnTable && cardsWrap && tableWrap) {
+      btnCards.addEventListener('click', () => {
+        btnCards.classList.add('active');
+        btnTable.classList.remove('active');
+        cardsWrap.style.display = 'grid';
+        tableWrap.style.display = 'none';
+        state.activeView = 'cards';
+      });
+
+      btnTable.addEventListener('click', () => {
+        btnTable.classList.add('active');
+        btnCards.classList.remove('active');
+        cardsWrap.style.display = 'none';
+        tableWrap.style.display = 'block';
+        state.activeView = 'table';
+      });
+    }
+
+    // 3. Employee Filter Pills
     const filterContainer = document.getElementById('employeeFilterPills');
     if (filterContainer) {
-      filterContainer.querySelectorAll('.allo-pill-btn, .filter-btn').forEach(btn => {
+      filterContainer.querySelectorAll('.allo-pill-btn').forEach(btn => {
         btn.addEventListener('click', function () {
-          filterContainer.querySelectorAll('.allo-pill-btn, .filter-btn').forEach(b => b.classList.remove('active'));
+          filterContainer.querySelectorAll('.allo-pill-btn').forEach(b => b.classList.remove('active'));
           this.classList.add('active');
           state.selectedEmployeeFilter = this.getAttribute('data-filter');
           renderEmployeeConsole();
@@ -1009,12 +1125,115 @@
       });
     }
 
-    // Floating WhatsApp Quick Action Button
+    // 4. "Explore Our Operational Cadences" Category Circles
+    document.querySelectorAll('.explore-circle-card').forEach(circle => {
+      circle.addEventListener('click', function () {
+        const targetTab = this.getAttribute('data-tab');
+        const targetFilter = this.getAttribute('data-filter');
+
+        if (targetTab) {
+          // Switch tab
+          document.querySelectorAll('.nav-tab-btn').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+
+          const tabBtn = document.querySelector(`.nav-tab-btn[data-tab="${targetTab}"]`);
+          const tabPane = document.getElementById(targetTab);
+          if (tabBtn) tabBtn.classList.add('active');
+          if (tabPane) tabPane.classList.add('active');
+        }
+
+        if (targetFilter) {
+          state.selectedEmployeeFilter = targetFilter;
+          const pills = document.querySelectorAll('#employeeFilterPills .allo-pill-btn');
+          pills.forEach(p => {
+            if (p.getAttribute('data-filter') === targetFilter) {
+              p.classList.add('active');
+            } else {
+              p.classList.remove('active');
+            }
+          });
+          renderEmployeeConsole();
+        }
+
+        // Smooth scroll down to main content
+        const mainElem = document.querySelector('.page-container');
+        if (mainElem) {
+          mainElem.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // 5. Store Nav Links (Top Header Category Links)
+    document.querySelectorAll('.store-nav-link').forEach(link => {
+      link.addEventListener('click', function () {
+        const cat = this.getAttribute('data-cat');
+        // Switch to Employee Console
+        document.querySelectorAll('.nav-tab-btn').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        const empTab = document.querySelector('.nav-tab-btn[data-tab="tabEmployeeReport"]');
+        const empPane = document.getElementById('tabEmployeeReport');
+        if (empTab) empTab.classList.add('active');
+        if (empPane) empPane.classList.add('active');
+
+        if (cat === 'storage') state.selectedEmployeeFilter = 'Employee A';
+        else if (cat === 'cookware') state.selectedEmployeeFilter = 'Employee B';
+        else if (cat === 'lunchbox') state.selectedEmployeeFilter = 'Employee C';
+        else if (cat === 'bakeware') state.selectedEmployeeFilter = 'Employee D';
+        else state.selectedEmployeeFilter = 'All';
+
+        const pills = document.querySelectorAll('#employeeFilterPills .allo-pill-btn');
+        pills.forEach(p => {
+          if (p.getAttribute('data-filter') === state.selectedEmployeeFilter) p.classList.add('active');
+          else p.classList.remove('active');
+        });
+
+        renderEmployeeConsole();
+        const mainElem = document.querySelector('.page-container');
+        if (mainElem) mainElem.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // 6. Hero Banner Buttons
+    const heroBtnCheck = document.getElementById('heroBtnCheck');
+    if (heroBtnCheck) heroBtnCheck.addEventListener('click', checkOverdueAndEscalations);
+
+    const heroBtnWa = document.getElementById('heroBtnWa');
+    if (heroBtnWa) {
+      heroBtnWa.addEventListener('click', () => {
+        const btnWa = document.getElementById('btnFloatingWhatsApp');
+        if (btnWa) btnWa.click();
+      });
+    }
+
+    const heroBtnTests = document.getElementById('heroBtnTests');
+    if (heroBtnTests) {
+      heroBtnTests.addEventListener('click', () => {
+        document.querySelectorAll('.nav-tab-btn').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        const testTab = document.querySelector('.nav-tab-btn[data-tab="tabTests"]');
+        const testPane = document.getElementById('tabTests');
+        if (testTab) testTab.classList.add('active');
+        if (testPane) testPane.classList.add('active');
+        runAllTests();
+        const mainElem = document.querySelector('.page-container');
+        if (mainElem) mainElem.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+
+    // 7. Global Search Input
+    const globalSearch = document.getElementById('globalSearchInput');
+    if (globalSearch) {
+      globalSearch.addEventListener('input', function () {
+        state.searchQuery = this.value.trim();
+        renderEmployeeConsole();
+      });
+    }
+
+    // 8. Floating WhatsApp Button
     const btnWa = document.getElementById('btnFloatingWhatsApp');
     if (btnWa) {
       btnWa.addEventListener('click', function () {
-        // Switch to Employee Console tab
-        document.querySelectorAll('.nav-tab-btn, .nav-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-tab-btn').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
 
         const empTab = document.querySelector('[data-tab="tabEmployeeReport"]');
@@ -1022,9 +1241,8 @@
         if (empTab) empTab.classList.add('active');
         if (empPane) empPane.classList.add('active');
 
-        // Set filter to Employee A
         state.selectedEmployeeFilter = 'Employee A';
-        const pills = document.querySelectorAll('.allo-pill-btn, .filter-btn');
+        const pills = document.querySelectorAll('#employeeFilterPills .allo-pill-btn');
         pills.forEach(p => {
           if (p.getAttribute('data-filter') === 'Employee A') {
             p.classList.add('active');
@@ -1035,29 +1253,41 @@
 
         renderEmployeeConsole();
 
-        const input = document.getElementById('input_proof_TSK-001');
-        if (input) {
-          input.value = 'WA-1730-Borosilicate-Dispatched-184Sets-0Exceptions';
-          input.focus();
-          showToast('💬 Pre-filled WhatsApp Daily Dispatch update. Click Complete to log!');
+        const cardInput = document.getElementById('card_input_TSK-001');
+        const tableInput = document.getElementById('input_proof_TSK-001');
+        const val = 'WA-1730-Borosilicate-Dispatched-184Sets-0Exceptions';
+        if (cardInput) {
+          cardInput.value = val;
+          cardInput.focus();
+        }
+        if (tableInput) tableInput.value = val;
+
+        const mainElem = document.querySelector('.page-container');
+        if (mainElem) mainElem.scrollIntoView({ behavior: 'smooth' });
+
+        showToast('💬 Pre-filled WhatsApp Daily Dispatch update. Click Complete to log!');
+      });
+    }
+
+    // 9. Floating Scroll-To-Top Button
+    const btnScrollTop = document.getElementById('btnScrollTop');
+    if (btnScrollTop) {
+      btnScrollTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 250) {
+          btnScrollTop.style.display = 'flex';
+        } else {
+          btnScrollTop.style.display = 'none';
         }
       });
     }
 
-    // Live Search Input
-    const searchInput = document.getElementById('employeeSearchInput');
-    if (searchInput) {
-      searchInput.addEventListener('input', function () {
-        state.searchQuery = this.value.trim();
-        renderEmployeeConsole();
-      });
-    }
-
-    // Header Quick Actions
+    // 10. Header Action Buttons
     const btnCheck = document.getElementById('btnCheckOverdue');
-    if (btnCheck) {
-      btnCheck.addEventListener('click', checkOverdueAndEscalations);
-    }
+    if (btnCheck) btnCheck.addEventListener('click', checkOverdueAndEscalations);
 
     const btnSimulate = document.getElementById('btnSimulateOverdue');
     if (btnSimulate) {
@@ -1085,14 +1315,14 @@
       });
     }
 
-    // Export Buttons
+    // 11. Export Buttons
     const btnCsv = document.getElementById('btnExportCsv');
     if (btnCsv) btnCsv.addEventListener('click', exportCsv);
 
     const btnJson = document.getElementById('btnExportJson');
     if (btnJson) btnJson.addEventListener('click', exportJson);
 
-    // Manager Action Form Submission
+    // 12. Manager Action Form Submission
     const mgrForm = document.getElementById('managerActionForm');
     if (mgrForm) {
       mgrForm.addEventListener('submit', function (e) {
@@ -1105,7 +1335,7 @@
       });
     }
 
-    // Settings Form Submission
+    // 13. Settings Form Submission
     const settingsForm = document.getElementById('settingsForm');
     if (settingsForm) {
       settingsForm.addEventListener('submit', function (e) {
@@ -1122,13 +1352,11 @@
       });
     }
 
-    // Test Suite Execution Button
+    // 14. Test Suite Execution Button
     const btnTests = document.getElementById('btnRunAllTests');
-    if (btnTests) {
-      btnTests.addEventListener('click', runAllTests);
-    }
+    if (btnTests) btnTests.addEventListener('click', runAllTests);
 
-    // Email Modal Close Handlers
+    // 15. Email Modal Close Handlers
     const btnClose1 = document.getElementById('btnModalClose');
     const btnClose2 = document.getElementById('btnModalCloseFooter');
     if (btnClose1) btnClose1.addEventListener('click', closeEmailModal);
@@ -1140,6 +1368,21 @@
         if (e.target === this) closeEmailModal();
       });
     }
+
+    // KPI Cards Click Handlers
+    document.querySelectorAll('.ops-kpi-card[data-tab]').forEach(kpi => {
+      kpi.addEventListener('click', function () {
+        const targetTab = this.getAttribute('data-tab');
+        if (targetTab) {
+          document.querySelectorAll('.nav-tab-btn').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+          const tabBtn = document.querySelector(`.nav-tab-btn[data-tab="${targetTab}"]`);
+          const tabPane = document.getElementById(targetTab);
+          if (tabBtn) tabBtn.classList.add('active');
+          if (tabPane) tabPane.classList.add('active');
+        }
+      });
+    });
   }
 
   // --- App Initialization ---

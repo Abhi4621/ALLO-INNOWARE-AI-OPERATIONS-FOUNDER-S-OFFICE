@@ -3,94 +3,326 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Allo Innoware - Operations Management Portal</title>
+  <title>Allo Innoware - Operations Management Portal & Recurring Task SLA Engine</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- Top Announcement Strip (Matches alloinnoware.com top header) -->
+  <!-- Top Announcement Strip (Exact Match to alloinnoware.com top bar) -->
   <div class="top-announcement-bar">
     <div class="top-announcement-left">
-      <span>📞 Ops Support: +91 70281 80799</span>
-      <span>•</span>
-      <span>Warehouse: Borosilicate & Triply Dispatch Hub</span>
+      <a href="tel:+917028180799" class="top-contact-link" id="topPhoneLink" title="Allo Innoware Operations Support">
+        <svg class="top-icon" viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+          <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24 11.72 11.72 0 003.68.59 1 1 0 011 1v3.5a1 1 0 01-1 1A17.93 17.93 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.72 11.72 0 00.59 3.68 1 1 0 01-.24 1.02l-2.23 2.09z"/>
+        </svg>
+        <span>+91 70281 80799</span>
+      </a>
+      <span class="top-divider">|</span>
+      <div class="top-social-links">
+        <a href="https://www.instagram.com/alloinnoware/" target="_blank" rel="noreferrer" class="social-icon" title="Instagram">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </a>
+        <a href="https://www.facebook.com/alloinnoware/" target="_blank" rel="noreferrer" class="social-icon" title="Facebook">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+            <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+          </svg>
+        </a>
+      </div>
     </div>
+
+    <!-- Official Allo Tagline -->
     <div class="top-announcement-center">
-      Allo Innoware Operations Portal & Recurring Task SLA Engine
+      Free Shipping &amp; 100% Replacement On Delivery Damage
     </div>
-    <div class="top-live-cutoff" title="Time remaining until 18:00 IST daily operations cutoff">
+
+    <!-- Live 18:00 IST Cutoff Sentinel -->
+    <div class="top-live-cutoff" id="cutoffIndicator" title="Time remaining until 18:00 IST daily operations cutoff">
       <span class="pulse-dot"></span>
-      <span>18:00 IST Cutoff:</span>
-      <strong id="cutoffCountdownText" style="font-family:var(--font-mono);">--:--:--</strong>
+      <span class="cutoff-label">18:00 IST Cutoff:</span>
+      <strong id="cutoffCountdownText" class="font-mono">--:--:--</strong>
     </div>
   </div>
 
-  <!-- Main Brand Header (Matches Allo Logo & Header Layout) -->
+  <!-- Main Brand Header (Matches Allo Logo & Store Navigation) -->
   <header class="main-header">
     <div class="brand-logo-container">
-      <div>
-        <div class="allo-logo-text">
-          allo<span class="allo-sprout">🌿</span>
+      <a href="#" class="brand-link" id="brandHomeLink">
+        <div class="allo-logo-wrap">
+          <span class="allo-logo-word">allo</span>
+          <svg class="allo-sprout-svg" viewBox="0 0 32 32" width="22" height="22">
+            <!-- Allo signature sprout graphic -->
+            <path d="M12 28 C12 20, 18 14, 28 10 C28 18, 22 26, 12 28 Z" fill="#7cb342"/>
+            <path d="M14 26 C15 17, 21 11, 29 8 C27 16, 21 23, 14 26 Z" fill="#8bc34a"/>
+            <path d="M7 28 C7 23, 4 19, 1 17 C2 23, 5 27, 7 28 Z" fill="#689f38"/>
+            <circle cx="12" cy="27" r="2.5" fill="#558b2f"/>
+          </svg>
+          <span class="allo-dot">.</span>
         </div>
         <div class="allo-subtext">INNOWARE</div>
-      </div>
-      <span class="brand-portal-tag">Founder's Office / Ops Sentinel</span>
+      </a>
+      <span class="brand-portal-tag">Founder's Office • AI Ops</span>
     </div>
 
-    <!-- Quick Action Buttons -->
+    <!-- Official Category-Style Header Navigation -->
+    <nav class="main-store-nav" id="storeNav">
+      <button class="store-nav-link" data-cat="storage">STORAGE CONTAINER ▾</button>
+      <button class="store-nav-link" data-cat="lunchbox">LUNCH BOX ▾</button>
+      <button class="store-nav-link" data-cat="cookware">COOKWARE ▾</button>
+      <button class="store-nav-link" data-cat="bakeware">BAKEWARE ▾</button>
+      <button class="store-nav-link" data-cat="bottles">BOTTLES ▾</button>
+    </nav>
+
+    <!-- Header Actions & Utility Icons -->
     <div class="header-action-group">
+      <!-- Search Input Toggle -->
+      <div class="search-wrap-mini">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="search-mini-icon">
+          <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+        <input type="text" id="globalSearchInput" placeholder="Search tasks, tickets, assignees..." />
+      </div>
+
+      <!-- Quick Action Buttons -->
       <button id="btnCheckOverdue" class="btn btn-allo-green" title="Check cutoff deadlines, dispatch manager alerts, and evaluate 24h SLA escalations">
-        ⚡ Check Deadlines & SLAs
+        ⚡ Check Deadlines
       </button>
-      <button id="btnSimulateOverdue" class="btn" title="Simulate an overdue scenario for Employee C to test manager alert">
-        🧪 Test Overdue Alert
+
+      <button id="btnSimulateOverdue" class="btn btn-outline" title="Simulate an overdue scenario for Employee C to test manager alert">
+        🧪 Test Alert
       </button>
-      <button id="btnResetData" class="btn btn-danger btn-sm" title="Reset sample test tasks to initial state">
+
+      <button id="btnResetData" class="btn btn-subtle btn-sm" title="Reset sample test tasks to initial state">
         ↺ Reset
       </button>
     </div>
   </header>
 
-  <!-- Category-Style Navigation Bar (Matches Allo Innoware Store Navigation) -->
-  <nav class="category-nav-bar">
+  <!-- Operations Tab Navigation Strip -->
+  <nav class="category-nav-bar" id="opsNavTabs">
     <button class="nav-tab-btn active" data-tab="tabEmployeeReport">
-      Employee Portal
+      <span class="tab-label">Employee Console</span>
     </button>
     <button class="nav-tab-btn" data-tab="tabTaskMaster">
-      Task Master <span class="nav-tab-badge" id="badgeTaskCount">4</span>
+      <span class="tab-label">Task Master</span>
+      <span class="nav-tab-badge" id="badgeTaskCount">4</span>
     </button>
     <button class="nav-tab-btn" data-tab="tabCompletionLog">
-      Completion Log <span class="nav-tab-badge" id="badgeLogCount">0</span>
+      <span class="tab-label">Completion Log</span>
+      <span class="nav-tab-badge" id="badgeLogCount">0</span>
     </button>
     <button class="nav-tab-btn" data-tab="tabManagerDashboard">
-      Manager Dashboard <span class="nav-tab-badge" id="badgeOverdueCount" style="color:var(--allo-red);">0</span>
+      <span class="tab-label">Manager Desk</span>
+      <span class="nav-tab-badge badge-overdue-tab" id="badgeOverdueCount">0</span>
     </button>
     <button class="nav-tab-btn" data-tab="tabNotificationLog">
-      Notification Log <span class="nav-tab-badge" id="badgeNotifCount">0</span>
+      <span class="tab-label">Notifications &amp; Alerts</span>
+      <span class="nav-tab-badge" id="badgeNotifCount">0</span>
     </button>
     <button class="nav-tab-btn" data-tab="tabSettings">
-      SLA Governance
+      <span class="tab-label">SLA Governance</span>
     </button>
-    <button class="nav-tab-btn" data-tab="tabTests" style="color:var(--allo-green-dark); font-weight:700;">
-      Verified Test Suite (8)
+    <button class="nav-tab-btn tab-highlight" data-tab="tabTests">
+      <span class="tab-label">Verified Test Suite (8)</span>
+      <span class="tab-status-pill">8 PASS</span>
     </button>
   </nav>
+
+  <!-- Main Hero Banner (Exact Aesthetic to Image 1: Allo Baking Dishes / Operations Sentinel) -->
+  <section class="allo-hero-banner" id="heroBanner">
+    <div class="hero-content">
+      <div class="hero-left">
+        <span class="hero-introducing">INTRODUCING</span>
+        <h1 class="hero-title">
+          ALLO INNOWARE<br>
+          <span class="hero-title-highlight">OPS &amp; SLA SENTINEL</span><br>
+          NOW ACTIVE
+        </h1>
+        <p class="hero-shapes">IN 4 RECURRING OPERATIONAL CADENCES</p>
+        <p class="hero-desc">
+          Automated multi-cadence tracking for <strong>Daily Operations</strong>, <strong>7-Day</strong>, <strong>15-Day</strong>, and <strong>30-Day</strong> portal duties. Single-point completion, Ticket ID proof validation, and two-tier SLA escalation engine.
+        </p>
+        <div class="hero-cta-group">
+          <button id="heroBtnCheck" class="btn btn-allo-green btn-hero">
+            ⚡ RUN DEADLINE AUDIT
+          </button>
+          <button id="heroBtnWa" class="btn btn-outline btn-hero">
+            💬 LOG WHATSAPP DISPATCH
+          </button>
+          <button id="heroBtnTests" class="btn btn-subtle btn-hero">
+            ▶ RUN 8 VERIFICATION TESTS
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <!-- Showcase Card with Allo Visual & Live Ops Metrics -->
+        <div class="hero-visual-card">
+          <div class="hero-badge-sale">ACTIVE SENTINEL</div>
+          <div class="hero-image-wrap">
+            <img src="images/media_1794931821342_13c10745.jpg" alt="Allo Innoware Baking Dishes" class="hero-product-img" onerror="this.style.display='none'; document.getElementById('heroSvgFallback').style.display='block';">
+            <!-- Fallback SVG in case image fails -->
+            <div id="heroSvgFallback" style="display:none; text-align:center; padding:20px;">
+              <svg viewBox="0 0 200 120" width="180" height="110">
+                <rect x="20" y="30" width="160" height="60" rx="10" fill="#f1f8e9" stroke="#7cb342" stroke-width="3"/>
+                <text x="100" y="65" text-anchor="middle" font-size="14" font-weight="700" fill="#558b2f">Allo FoodSafe Glass</text>
+              </svg>
+            </div>
+          </div>
+          <div class="hero-metric-strip">
+            <div class="hero-metric-item">
+              <span class="hero-metric-label">Cutoff</span>
+              <strong class="hero-metric-val">18:00 IST</strong>
+            </div>
+            <div class="hero-metric-divider"></div>
+            <div class="hero-metric-item">
+              <span class="hero-metric-label">Active Cycles</span>
+              <strong class="hero-metric-val" id="heroActiveVal">4</strong>
+            </div>
+            <div class="hero-metric-divider"></div>
+            <div class="hero-metric-item">
+              <span class="hero-metric-label">Compliance</span>
+              <strong class="hero-metric-val" id="heroComplianceVal" style="color:#7cb342;">100%</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- "Explore Our Operational Cadences" Section (Exact Match to Image 2: Circular Categories) -->
+  <section class="explore-range-section">
+    <div class="explore-header">
+      <h2 class="explore-title">Explore Our Operational Cadences</h2>
+      <p class="explore-subtitle">Click any category to filter tasks, inspect cycle frequencies, or jump directly into the ledger.</p>
+    </div>
+
+    <div class="explore-circles-row">
+      <!-- 1. Daily WhatsApp Update -->
+      <div class="explore-circle-card" data-filter="Employee A" data-tab="tabEmployeeReport" title="Daily Operations Update (WhatsApp)">
+        <div class="explore-circle-border">
+          <div class="explore-circle-inner">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="#7cb342">
+              <path d="M17 18c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1m-10 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1m13.5-9H17V4c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v5H3.5C2.67 9 2 9.67 2 10.5V17h2c0 1.66 1.34 3 3 3s3-1.34 3-3h4c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-6.5c0-.83-.67-1.5-1.5-1.5M9 4h6v5H9V4z"/>
+            </svg>
+          </div>
+        </div>
+        <span class="explore-circle-label">Daily WhatsApp</span>
+        <span class="explore-circle-tag">Employee A (Daily)</span>
+      </div>
+
+      <!-- 2. 7-Day Portal Task A -->
+      <div class="explore-circle-card" data-filter="Employee B" data-tab="tabEmployeeReport" title="Portal Task A (7-Day Cycle)">
+        <div class="explore-circle-border">
+          <div class="explore-circle-inner">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="#7cb342">
+              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+            </svg>
+          </div>
+        </div>
+        <span class="explore-circle-label">Portal Task A</span>
+        <span class="explore-circle-tag">Employee B (7 Days)</span>
+      </div>
+
+      <!-- 3. 15-Day Portal Task B -->
+      <div class="explore-circle-card" data-filter="Employee C" data-tab="tabEmployeeReport" title="Portal Task B (15-Day Cycle)">
+        <div class="explore-circle-border">
+          <div class="explore-circle-inner">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="#7cb342">
+              <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>
+            </svg>
+          </div>
+        </div>
+        <span class="explore-circle-label">Portal Task B</span>
+        <span class="explore-circle-tag">Employee C (15 Days)</span>
+      </div>
+
+      <!-- 4. 30-Day Portal Task C -->
+      <div class="explore-circle-card" data-filter="Employee D" data-tab="tabEmployeeReport" title="Portal Task C (30-Day Cycle)">
+        <div class="explore-circle-border">
+          <div class="explore-circle-inner">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="#7cb342">
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm4.2 14.2L11 13V7h1.5v5.2l4.5 2.7-.8 1.3z"/>
+            </svg>
+          </div>
+        </div>
+        <span class="explore-circle-label">Portal Task C</span>
+        <span class="explore-circle-tag">Employee D (30 Days)</span>
+      </div>
+
+      <!-- 5. Active Task Registry -->
+      <div class="explore-circle-card" data-tab="tabTaskMaster" title="Recurring Task Master Registry">
+        <div class="explore-circle-border">
+          <div class="explore-circle-inner">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="#7cb342">
+              <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/>
+            </svg>
+          </div>
+        </div>
+        <span class="explore-circle-label">Task Master</span>
+        <span class="explore-circle-tag">Master Registry</span>
+      </div>
+
+      <!-- 6. Completion Ledger -->
+      <div class="explore-circle-card" data-tab="tabCompletionLog" title="Audit Completion Ledger">
+        <div class="explore-circle-border">
+          <div class="explore-circle-inner">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="#7cb342">
+              <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+            </svg>
+          </div>
+        </div>
+        <span class="explore-circle-label">Completion Log</span>
+        <span class="explore-circle-tag">Audit Trail</span>
+      </div>
+
+      <!-- 7. Manager Control Tower -->
+      <div class="explore-circle-card" data-tab="tabManagerDashboard" title="Manager Review &amp; Acknowledgement Desk">
+        <div class="explore-circle-border">
+          <div class="explore-circle-inner">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="#e53935">
+              <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+            </svg>
+          </div>
+        </div>
+        <span class="explore-circle-label" style="color:#e53935;">Manager Desk</span>
+        <span class="explore-circle-tag">Overdue &amp; Waivers</span>
+      </div>
+
+      <!-- 8. SLA Governance & Settings -->
+      <div class="explore-circle-card" data-tab="tabSettings" title="SLA Governance &amp; Escalation Thresholds">
+        <div class="explore-circle-border">
+          <div class="explore-circle-inner">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="#7cb342">
+              <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+            </svg>
+          </div>
+        </div>
+        <span class="explore-circle-label">SLA Settings</span>
+        <span class="explore-circle-tag">Threshold Rules</span>
+      </div>
+    </div>
+  </section>
 
   <!-- Main Content Page -->
   <main class="page-container">
 
-    <!-- Allo Operations KPI Overview (Allo Style Circular Category Cards) -->
+    <!-- KPI Summary Cards (Compact Brand Style) -->
     <section class="ops-kpi-grid">
-      <div class="ops-kpi-card">
+      <div class="ops-kpi-card" data-tab="tabTaskMaster">
         <div class="kpi-circle-icon kpi-circle-active">📦</div>
         <div class="kpi-body">
           <p>Active Task Cycles</p>
           <h3 id="statTotalActive">4</h3>
-          <span class="kpi-subtext">Cookware & Dispatch Ops</span>
+          <span class="kpi-subtext">Cookware &amp; Dispatch Ops</span>
         </div>
       </div>
 
-      <div class="ops-kpi-card">
+      <div class="ops-kpi-card" data-tab="tabCompletionLog">
         <div class="kpi-circle-icon">✓</div>
         <div class="kpi-body">
           <p>Cycles Completed</p>
@@ -99,7 +331,7 @@
         </div>
       </div>
 
-      <div class="ops-kpi-card">
+      <div class="ops-kpi-card" data-tab="tabManagerDashboard">
         <div class="kpi-circle-icon kpi-circle-overdue">⚠</div>
         <div class="kpi-body">
           <p>Overdue (Level 1 Alert)</p>
@@ -108,40 +340,53 @@
         </div>
       </div>
 
-      <div class="ops-kpi-card">
+      <div class="ops-kpi-card" data-tab="tabManagerDashboard">
         <div class="kpi-circle-icon kpi-circle-escalated">🚨</div>
         <div class="kpi-body">
           <p>Leadership Escalation</p>
           <h3 id="statEscalated" style="color:#c2185b;">0</h3>
-          <span class="kpi-subtext" style="color:#c2185b;">Founder SLA Breach (>24h)</span>
+          <span class="kpi-subtext" style="color:#c2185b;">Founder SLA Breach (&gt;24h)</span>
         </div>
       </div>
     </section>
 
-    <!-- 1. Employee Operating Console (Single-Point Interface) -->
+    <!-- 1. Employee Operating Console (Product Card & Table Views) -->
     <section id="tabEmployeeReport" class="tab-pane active">
       <div class="section-header">
         <div class="section-heading-group">
-          <h2>Employee Operating Console</h2>
-          <p>Single-point updating: View your assigned recurring duties, submit Ticket ID or WhatsApp update verification, and mark complete.</p>
+          <h2>Employee Operating Console (Single-Point Updating)</h2>
+          <p>View your assigned duties, input Ticket ID or WhatsApp dispatch verification, and complete tasks with automatic next-cycle rollover.</p>
+        </div>
+        <div class="view-toggle-group">
+          <button id="btnViewCards" class="view-toggle-btn active" title="Show Allo Product Card View">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M4 11h5V5H4v6zm0 7h5v-6H4v6zm6 0h5v-6h-5v6zm6 0h5v-6h-5v6zm-6-7h5V5h-5v6zm6-6v6h5V5h-5z"/></svg>
+            Card View
+          </button>
+          <button id="btnViewTable" class="view-toggle-btn" title="Show Dense Spreadsheet Table View">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M3 3v18h18V3H3zm8 16H5v-4h6v4zm0-6H5V9h6v4zm0-6H5V5h6v2zm8 12h-6v-4h6v4zm0-6h-6V9h6v4zm0-6h-6V5h6v2z"/></svg>
+            Table View
+          </button>
         </div>
       </div>
 
-      <div class="allo-card">
-        <div class="allo-card-header">
-          <div class="allo-search-wrap">
-            <span style="color:var(--allo-text-muted); margin-right:8px;">🔍</span>
-            <input type="text" id="employeeSearchInput" placeholder="Search tasks, IDs, or assignees...">
-          </div>
-          <div class="filter-pills-row" id="employeeFilterPills">
-            <button class="allo-pill-btn active" data-filter="All">All Operations</button>
-            <button class="allo-pill-btn" data-filter="Employee A">Employee A (Daily Ops)</button>
-            <button class="allo-pill-btn" data-filter="Employee B">Employee B (Portal 7d)</button>
-            <button class="allo-pill-btn" data-filter="Employee C">Employee C (Portal 15d)</button>
-            <button class="allo-pill-btn" data-filter="Employee D">Employee D (Portal 30d)</button>
-          </div>
+      <!-- Filter Pills Row (Matches Allo Store Sub-Tabs from Image 4) -->
+      <div class="allo-card" style="margin-bottom:18px;">
+        <div class="filter-pills-row" id="employeeFilterPills">
+          <button class="allo-pill-btn active" data-filter="All">All Operations (4)</button>
+          <button class="allo-pill-btn" data-filter="Employee A">Employee A (Daily Ops)</button>
+          <button class="allo-pill-btn" data-filter="Employee B">Employee B (Portal 7d)</button>
+          <button class="allo-pill-btn" data-filter="Employee C">Employee C (Portal 15d)</button>
+          <button class="allo-pill-btn" data-filter="Employee D">Employee D (Portal 30d)</button>
         </div>
+      </div>
 
+      <!-- A. Product-Card Style Operational Cards (Exact Match to Image 4: Triply Cookware Grid) -->
+      <div class="product-cards-grid" id="employeeCardsContainer">
+        <!-- Rendered dynamically by JavaScript with Allo product imagery & green action buttons -->
+      </div>
+
+      <!-- B. Dense Spreadsheet Table View (Toggleable) -->
+      <div class="allo-card" id="employeeTableContainer" style="display:none;">
         <div class="table-responsive">
           <table>
             <thead>
@@ -207,11 +452,11 @@
       <div class="section-header">
         <div class="section-heading-group">
           <h2>Immutable Task Completion Log</h2>
-          <p>Permanent historical ledger of completed operational cycles, turnaround times, and verified proof.</p>
+          <p>Permanent historical audit ledger of completed operational cycles, turnaround times, and verified proof.</p>
         </div>
         <div style="display:flex; gap:8px;">
-          <button id="btnExportCsv" class="btn btn-sm">📥 Export CSV</button>
-          <button id="btnExportJson" class="btn btn-sm">📄 Export JSON</button>
+          <button id="btnExportCsv" class="btn btn-sm btn-outline">📥 Export CSV</button>
+          <button id="btnExportJson" class="btn btn-sm btn-outline">📄 Export JSON</button>
         </div>
       </div>
 
@@ -246,7 +491,7 @@
         <!-- Live Watchlist -->
         <div class="allo-card">
           <div class="allo-card-header" style="background:#fafcf8;">
-            <strong style="font-size:13px; color:var(--allo-text);">⚠️ Active Overdue & Escalation Watchlist</strong>
+            <strong style="font-size:13px; color:var(--allo-text);">⚠️ Active Overdue &amp; Escalation Watchlist</strong>
             <span class="badge badge-overdue" id="watchlistCountBadge">0 Flagged</span>
           </div>
           <div class="table-responsive">
@@ -271,7 +516,7 @@
         <div class="form-card">
           <div class="section-header" style="margin-bottom:12px;">
             <div class="section-heading-group">
-              <h3 style="font-size:15px; color:var(--allo-text);">⚡ Manager Review & Acknowledgement Desk</h3>
+              <h3 style="font-size:15px; color:var(--allo-text);">⚡ Manager Review &amp; Acknowledgement Desk</h3>
               <p>Review flagged duties, grant 24h operational waivers, or log resolutions.</p>
             </div>
           </div>
@@ -287,8 +532,8 @@
             <div class="form-group">
               <label for="mgrActionType">Review Action Decision:</label>
               <select id="mgrActionType">
-                <option value="Acknowledge & Follow Up">Acknowledge & Follow Up (Record review & notify team)</option>
-                <option value="Waived / 24h Extension">Grant 24-Hour Waiver (Extends due date & pauses escalation)</option>
+                <option value="Acknowledge &amp; Follow Up">Acknowledge &amp; Follow Up (Record review &amp; notify team)</option>
+                <option value="Waived / 24h Extension">Grant 24-Hour Waiver (Extends due date &amp; pauses escalation)</option>
                 <option value="Mark Resolved Manually">Mark Resolved Manually (Manager verifies completion)</option>
               </select>
             </div>
@@ -310,7 +555,7 @@
     <section id="tabNotificationLog" class="tab-pane">
       <div class="section-header">
         <div class="section-heading-group">
-          <h2>Notification & Escalation Audit Ledger</h2>
+          <h2>Notification &amp; Escalation Audit Ledger</h2>
           <p>Audits all automated manager alerts, reminders, and leadership escalations. Prevents duplicate notifications.</p>
         </div>
       </div>
@@ -370,7 +615,7 @@
             <div class="form-group">
               <label for="settingSimulationMode">Dispatch Mode:</label>
               <select id="settingSimulationMode">
-                <option value="true">Simulation Mode (Log & Preview Emails)</option>
+                <option value="true">Simulation Mode (Log &amp; Preview Emails)</option>
                 <option value="false">Live Delivery Mode (Gmail Integration)</option>
               </select>
             </div>
@@ -415,11 +660,74 @@
       </div>
     </section>
 
+    <!-- "Loved 💕 By Allo Operations" Section (Exact Match to Image 3) -->
+    <section class="loved-by-section">
+      <div class="loved-header">
+        <h2 class="loved-title">Loved 💕 By Allo Operations</h2>
+        <p class="loved-subtitle">Key architectural pillars engineered for Founder's Office &amp; Warehouse Dispatch Reliability.</p>
+      </div>
+
+      <div class="loved-cards-grid">
+        <div class="loved-card">
+          <div class="loved-card-top">
+            <span class="loved-tag">FEATURE 01</span>
+            <span class="loved-badge">Single-Point</span>
+          </div>
+          <h4 class="loved-card-title">Single-Point Task Updating</h4>
+          <p class="loved-card-text">
+            Employees see pending tasks and enter Ticket ID or WhatsApp digest in one place. Zero multi-sheet duplication.
+          </p>
+        </div>
+
+        <div class="loved-card">
+          <div class="loved-card-top">
+            <span class="loved-tag">FEATURE 02</span>
+            <span class="loved-badge">Auto Rollover</span>
+          </div>
+          <h4 class="loved-card-title">Automatic Recurrence Engine</h4>
+          <p class="loved-card-text">
+            Cycles advance automatically: Daily (skips Sunday), 7 Days, 15 Days, and 30 Days. Zero manual date math.
+          </p>
+        </div>
+
+        <div class="loved-card">
+          <div class="loved-card-top">
+            <span class="loved-tag">FEATURE 03</span>
+            <span class="loved-badge">Self-Cert</span>
+          </div>
+          <h4 class="loved-card-title">WhatsApp Dispatch Verification</h4>
+          <p class="loved-card-text">
+            Structured message digest reference self-certifies daily dispatches reliably without fragile scraper scripts.
+          </p>
+        </div>
+
+        <div class="loved-card">
+          <div class="loved-card-top">
+            <span class="loved-tag">FEATURE 04</span>
+            <span class="loved-badge">Two-Tier SLA</span>
+          </div>
+          <h4 class="loved-card-title">Cutoff Sentinel &amp; Escalations</h4>
+          <p class="loved-card-text">
+            Enforces 18:00 IST daily cutoff. Dispatches Level 1 Manager Alert, followed by Level 2 Founder Escalation after 24 hours.
+          </p>
+        </div>
+      </div>
+    </section>
+
   </main>
+
+  <!-- Floating Scroll-To-Top Button (Matches Image 3 & 4) -->
+  <button class="floating-scroll-top-btn" id="btnScrollTop" title="Scroll to Top">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+      <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+    </svg>
+  </button>
 
   <!-- Floating WhatsApp Quick Button (Matches alloinnoware.com bottom right WhatsApp widget) -->
   <button class="floating-whatsapp-btn" id="btnFloatingWhatsApp" title="Allo Innoware Daily WhatsApp Update Quick Logger">
-    💬
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="#ffffff">
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2zm5.82 14.07c-.24.67-1.39 1.29-1.93 1.37-.51.08-1.18.11-3.39-.8-2.31-.96-3.79-3.32-3.9-3.48-.12-.16-.94-1.25-.94-2.38s.59-1.69.8-1.92c.21-.24.46-.3.61-.3.15 0 .31 0 .44.01.14.01.32-.05.5.39.18.44.63 1.54.68 1.66.06.12.09.26.02.41-.08.15-.12.24-.23.38-.12.14-.25.31-.36.42-.12.12-.24.25-.1.5.14.24.63 1.04 1.35 1.68.93.83 1.71 1.08 1.96 1.2.24.12.39.11.53-.06.15-.17.63-.73.8-1 .17-.26.35-.22.58-.13.24.08 1.5.71 1.76.84.26.12.44.18.5.29.07.11.07.65-.17 1.32z"/>
+    </svg>
   </button>
 
   <!-- Interactive Email Preview Modal -->
@@ -427,7 +735,7 @@
     <div class="modal-card">
       <div class="modal-header">
         <strong id="modalEmailSubject" style="font-size:13px; color:var(--allo-text);">Email Notification Preview</strong>
-        <button id="btnModalClose" class="btn btn-sm" style="padding:2px 8px;">✕</button>
+        <button id="btnModalClose" class="btn btn-sm btn-subtle" style="padding:2px 8px;">✕</button>
       </div>
       <div class="modal-body" id="modalEmailBody">
         <!-- Rendered email HTML -->
