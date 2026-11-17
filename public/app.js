@@ -1,7 +1,6 @@
 /**
  * Allo Innoware - Operations Control Tower & Task Engine
- * Advanced Client Application Logic
- * Modeled after https://alloinnoware.com/ Brand Identity
+ * High-Efficiency Client Application Logic
  * Developed by 4th-Year B.Tech CSE (AI & ML) Student
  */
 
@@ -30,8 +29,6 @@
       assignedEmail: 'employee.a@alloinnoware.com',
       frequency: 'Daily',
       frequencyDays: 1,
-      category: 'Storage & Bakeware Dispatch',
-      productModel: 'Allo FoodSafe Borosilicate Glass Dishes & Bowls',
       startDate: getTodayString(0),
       dueDate: getTodayString(0),
       cutoffTime: '18:00',
@@ -47,13 +44,11 @@
     },
     {
       taskId: 'TSK-002',
-      taskName: 'Portal Task A (Triply Pressure Cooker Inventory)',
+      taskName: 'Portal Task A (Triply Cookware Inventory Sync)',
       assignedTo: 'Employee B',
       assignedEmail: 'employee.b@alloinnoware.com',
       frequency: '7 Days',
       frequencyDays: 7,
-      category: 'Triply Cookware Cadence',
-      productModel: 'Allo CookSafe 2L Triply Stainless Steel Pressure Cooker',
       startDate: getTodayString(0),
       dueDate: getTodayString(7),
       cutoffTime: '18:00',
@@ -74,8 +69,6 @@
       assignedEmail: 'employee.c@alloinnoware.com',
       frequency: '15 Days',
       frequencyDays: 15,
-      category: 'Lunch Box & Container Cadence',
-      productModel: 'Allo Break-Free Detachable Lock Glass Containers',
       startDate: getTodayString(0),
       dueDate: getTodayString(15),
       cutoffTime: '18:00',
@@ -91,13 +84,11 @@
     },
     {
       taskId: 'TSK-004',
-      taskName: 'Portal Task C (GST Filing & Financial Audit)',
+      taskName: 'Portal Task C (GST Filing & Monthly Audit)',
       assignedTo: 'Employee D',
       assignedEmail: 'employee.d@alloinnoware.com',
       frequency: '30 Days',
       frequencyDays: 30,
-      category: 'Founder & Finance Cadence',
-      productModel: 'Allo CookSafe Triply Cookware Sets & Monthly Audit',
       startDate: getTodayString(0),
       dueDate: getTodayString(30),
       cutoffTime: '18:00',
@@ -130,24 +121,23 @@
     notificationLogs: [],
     settings: { ...DEFAULT_SETTINGS },
     selectedEmployeeFilter: 'All',
-    searchQuery: '',
-    activeView: 'cards' // 'cards' or 'table'
+    searchQuery: ''
   };
 
   // --- LocalStorage Persistence ---
   function loadState() {
     try {
-      const storedTasks = localStorage.getItem('allo_ops_tasks_v2');
-      const storedLogs = localStorage.getItem('allo_ops_completions_v2');
-      const storedNotifs = localStorage.getItem('allo_ops_notifs_v2');
-      const storedSettings = localStorage.getItem('allo_ops_settings_v2');
+      const storedTasks = localStorage.getItem('allo_ops_clean_tasks');
+      const storedLogs = localStorage.getItem('allo_ops_clean_logs');
+      const storedNotifs = localStorage.getItem('allo_ops_clean_notifs');
+      const storedSettings = localStorage.getItem('allo_ops_clean_settings');
 
       state.tasks = storedTasks ? JSON.parse(storedTasks) : JSON.parse(JSON.stringify(DEFAULT_TASKS));
       state.completionLogs = storedLogs ? JSON.parse(storedLogs) : [];
       state.notificationLogs = storedNotifs ? JSON.parse(storedNotifs) : [];
       state.settings = storedSettings ? JSON.parse(storedSettings) : { ...DEFAULT_SETTINGS };
     } catch (e) {
-      console.warn('Failed to load state from localStorage, using defaults.', e);
+      console.warn('Using default state.', e);
       state.tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
       state.completionLogs = [];
       state.notificationLogs = [];
@@ -157,10 +147,10 @@
 
   function saveState() {
     try {
-      localStorage.setItem('allo_ops_tasks_v2', JSON.stringify(state.tasks));
-      localStorage.setItem('allo_ops_completions_v2', JSON.stringify(state.completionLogs));
-      localStorage.setItem('allo_ops_notifs_v2', JSON.stringify(state.notificationLogs));
-      localStorage.setItem('allo_ops_settings_v2', JSON.stringify(state.settings));
+      localStorage.setItem('allo_ops_clean_tasks', JSON.stringify(state.tasks));
+      localStorage.setItem('allo_ops_clean_logs', JSON.stringify(state.completionLogs));
+      localStorage.setItem('allo_ops_clean_notifs', JSON.stringify(state.notificationLogs));
+      localStorage.setItem('allo_ops_clean_settings', JSON.stringify(state.settings));
     } catch (e) {
       console.error('Error saving state:', e);
     }
@@ -175,7 +165,7 @@
     toast.classList.add('show');
     setTimeout(() => {
       toast.classList.remove('show');
-    }, 3400);
+    }, 3200);
   }
 
   // --- Live 18:00 Cutoff Countdown Timer ---
@@ -208,7 +198,7 @@
 
     if (frequency === 'Daily') {
       nextDate.setDate(nextDate.getDate() + 1);
-      // Skip Sunday (Business Rule)
+      // Skip Sunday (Business rule)
       if (nextDate.getDay() === 0) {
         nextDate.setDate(nextDate.getDate() + 1);
       }
@@ -443,24 +433,16 @@
     document.getElementById('badgeOverdueCount').textContent = overdueCount + escalatedCount;
     document.getElementById('badgeNotifCount').textContent = state.notificationLogs.length;
 
-    // Hero stats
-    const heroActiveElem = document.getElementById('heroActiveVal');
-    if (heroActiveElem) heroActiveElem.textContent = totalActive;
-
     const rateElem = document.getElementById('statCompletedRate');
     if (rateElem) {
-      const rate = state.completionLogs.length > 0 ? '100% Audit Verified' : 'Awaiting Completion';
-      rateElem.textContent = rate;
+      rateElem.textContent = state.completionLogs.length > 0 ? `${state.completionLogs.length} Verified` : 'Awaiting Log';
     }
   }
 
-  // --- Render Employee Console (Cards & Table) ---
   function renderEmployeeConsole() {
-    const cardsContainer = document.getElementById('employeeCardsContainer');
     const tbody = document.getElementById('employeeReportBody');
-    if (!cardsContainer || !tbody) return;
+    if (!tbody) return;
 
-    cardsContainer.innerHTML = '';
     tbody.innerHTML = '';
     const todayStr = getTodayString(0);
 
@@ -479,12 +461,6 @@
     });
 
     if (filtered.length === 0) {
-      const emptyMsg = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 36px; background: #ffffff; border-radius: 8px; border: 1px dashed var(--allo-border);">
-          <p style="color: var(--allo-text-muted); font-size: 13px;">No active tasks matching current filter or search criteria.</p>
-        </div>
-      `;
-      cardsContainer.innerHTML = emptyMsg;
       tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:#94a3b8; padding:24px;">No active tasks matching current filter or search criteria.</td></tr>';
       return;
     }
@@ -496,76 +472,16 @@
       }
 
       let statusBadge = `<span class="badge badge-pending">Pending</span>`;
-      let statusTagClass = 'status-tag-pending';
-      let statusTagText = 'Pending Action';
-
-      if (displayStatus === 'Overdue') {
-        statusBadge = `<span class="badge badge-overdue">⚠️ Overdue</span>`;
-        statusTagClass = 'status-tag-overdue';
-        statusTagText = '⚠️ Overdue';
-      } else if (displayStatus === 'Escalated') {
-        statusBadge = `<span class="badge badge-escalated">🚨 Escalated</span>`;
-        statusTagClass = 'status-tag-escalated';
-        statusTagText = '🚨 Escalated';
-      } else if (displayStatus === 'Completed') {
-        statusBadge = `<span class="badge badge-completed">✓ Completed</span>`;
-        statusTagClass = 'status-tag-completed';
-        statusTagText = '✓ Completed';
-      }
+      if (displayStatus === 'Overdue') statusBadge = `<span class="badge badge-overdue">⚠️ Overdue</span>`;
+      if (displayStatus === 'Escalated') statusBadge = `<span class="badge badge-escalated">🚨 Escalated</span>`;
+      if (displayStatus === 'Completed') statusBadge = `<span class="badge badge-completed">✓ Completed</span>`;
 
       const isWaived = t.managerAck === 'Waived / 24h Extension';
       const isDaily = t.frequency === 'Daily';
       const placeholder = isDaily
         ? 'e.g. WA-1730-Borosilicate-Dispatched-184Sets'
-        : 'e.g. TICKET-4029 or portal resolution';
+        : 'e.g. TICKET-4029 or portal ticket ID';
 
-      // Cadence Tag (Matches SALE 35% badge style in Image 4)
-      let cadenceTag = 'DAILY CADENCE';
-      if (t.frequency === '7 Days') cadenceTag = 'EVERY 7 DAYS';
-      if (t.frequency === '15 Days') cadenceTag = 'EVERY 15 DAYS';
-      if (t.frequency === '30 Days') cadenceTag = 'EVERY 30 DAYS';
-
-      // 1. Render Product Task Card (Matches Image 4)
-      const card = document.createElement('div');
-      card.className = 'product-task-card';
-      card.innerHTML = `
-        <div class="product-card-top-strip">
-          <span class="sale-tag-badge">${cadenceTag}</span>
-          <span class="status-tag-badge ${statusTagClass}">${statusTagText}</span>
-        </div>
-
-        <div class="product-card-body">
-          <span class="product-card-category">${t.category || 'Allo Operations Cadence'}</span>
-          <h3 class="product-card-title">${t.taskName}</h3>
-
-          <div class="product-meta-row">
-            <span class="product-meta-item">Assignee: <strong>${t.assignedTo}</strong></span>
-            <span class="product-meta-item">Cycle: <span class="badge-code">${t.cycleId}</span></span>
-            <span class="product-meta-item">Due: <strong style="${t.dueDate <= todayStr ? 'color:var(--allo-red);' : ''}">${t.dueDate}</strong></span>
-            ${isWaived ? '<span class="product-meta-item" style="color:var(--allo-green-dark); font-weight:700;">(24h Waiver Active)</span>' : ''}
-          </div>
-
-          <div class="product-price-row">
-            <span class="product-current-price">Cycle Iteration #${t.cycleNumber}</span>
-            <span class="product-mrp-price">Cutoff: 18:00 IST</span>
-          </div>
-
-          <div class="product-proof-input-wrap">
-            <label class="product-proof-label">Required Verification: ${t.proofRequired}</label>
-            <input type="text" class="product-proof-input" id="card_input_${t.taskId}" placeholder="${placeholder}">
-          </div>
-
-          <button class="btn-add-to-cart btn-card-complete" data-taskid="${t.taskId}">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-              <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
-            </svg>
-            COMPLETE &amp; AUTO-RENEW CYCLE
-          </button>
-        </div>
-      `;
-      cardsContainer.appendChild(card);
-
-      // 2. Render Table Row (Alternative spreadsheet view)
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td style="font-weight:700; color:#1e293b;">${t.taskId}</td>
@@ -574,10 +490,10 @@
         <td><strong>${t.assignedTo}</strong></td>
         <td><span class="badge badge-freq">${t.frequency}</span></td>
         <td>
-          <span style="font-weight:600; ${t.dueDate <= todayStr ? 'color:#b91c1c;' : 'color:#334155;'}">
+          <span style="font-weight:600; ${t.dueDate <= todayStr ? 'color:var(--allo-red);' : 'color:#334155;'}">
             ${t.dueDate}
           </span>
-          ${isWaived ? '<br><small style="color:#059669; font-weight:600;">(24h Waiver Active)</small>' : ''}
+          ${isWaived ? '<br><small style="color:var(--allo-green-dark); font-weight:700;">(24h Waiver Active)</small>' : ''}
         </td>
         <td>${statusBadge}</td>
         <td style="color:#475569; font-size:11px;">${t.proofRequired}</td>
@@ -593,17 +509,6 @@
       tbody.appendChild(tr);
     });
 
-    // Attach click events to Card Complete buttons
-    cardsContainer.querySelectorAll('.btn-card-complete').forEach(btn => {
-      btn.addEventListener('click', function () {
-        const tid = this.getAttribute('data-taskid');
-        const inputElem = document.getElementById('card_input_' + tid);
-        const proofVal = inputElem ? inputElem.value : '';
-        completeTask(tid, proofVal);
-      });
-    });
-
-    // Attach click events to Table Complete buttons
     tbody.querySelectorAll('.btn-mark-complete').forEach(btn => {
       btn.addEventListener('click', function () {
         const tid = this.getAttribute('data-taskid');
@@ -634,7 +539,7 @@
         <td style="font-weight:600;">${t.dueDate}</td>
         <td style="color:#475569;">${t.proofRequired}</td>
         <td>${statusBadge}</td>
-        <td>${t.cycleNumber}</td>
+        <td>#${t.cycleNumber}</td>
         <td><span class="badge-code">${t.cycleId}</span></td>
         <td>${t.managerAlerted ? '⚠️ Alerted' : 'No'}</td>
         <td>${t.managerAck}</td>
@@ -667,7 +572,7 @@
         <td>#${c.cycleNumber}</td>
         <td>${c.dueDate}</td>
         <td>${c.completedAt}</td>
-        <td style="font-weight:500; color:#1e293b;">${c.proofSubmitted}</td>
+        <td style="font-weight:600; color:#1e293b;">${c.proofSubmitted}</td>
         <td>${badge}</td>
       `;
       tbody.appendChild(tr);
@@ -675,7 +580,6 @@
   }
 
   function renderManagerDashboard() {
-    // Watchlist Table
     const watchBody = document.getElementById('managerWatchlistBody');
     const badgeWatch = document.getElementById('watchlistCountBadge');
     if (watchBody) {
@@ -685,7 +589,7 @@
       if (badgeWatch) badgeWatch.textContent = `${flagged.length} Flagged`;
 
       if (flagged.length === 0) {
-        watchBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#10b981; padding:20px;">✅ All operational tasks are currently on-track. Zero overdue items.</td></tr>';
+        watchBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#10b981; padding:20px;">✅ All operational tasks are on track. Zero overdue items.</td></tr>';
       } else {
         flagged.forEach(t => {
           let badge = t.status === 'Escalated' ? `<span class="badge badge-escalated">Escalated</span>` : `<span class="badge badge-overdue">Overdue</span>`;
@@ -702,7 +606,6 @@
       }
     }
 
-    // Populate Select Task Dropdown
     const selectElem = document.getElementById('mgrSelectTask');
     if (selectElem) {
       selectElem.innerHTML = '';
@@ -807,18 +710,18 @@
     if (isEscalation) {
       emailHtml = `
         <div style="font-family:sans-serif; background:#ffffff; border:1px solid #fecdd3; border-radius:8px; overflow:hidden;">
-          <div style="background:#e11d48; color:#fff; padding:14px 18px;">
-            <div style="font-size:18px; font-weight:800; letter-spacing:-0.03em;">allo🌿 <span style="font-size:10px; font-weight:700; letter-spacing:0.2em;">INNOWARE</span></div>
-            <h4 style="margin:4px 0 0 0; font-size:14px;">Leadership SLA Escalation Protocol</h4>
+          <div style="background:#e11d48; color:#fff; padding:12px 16px;">
+            <div style="font-size:16px; font-weight:800;">allo🌿 <span style="font-size:10px; font-weight:700; letter-spacing:0.2em;">INNOWARE</span></div>
+            <h4 style="margin:2px 0 0 0; font-size:13px;">Leadership SLA Escalation Protocol</h4>
             <small style="color:#ffe4e6;">Critical SLA Breach: Unresolved >24 hours past manager alert</small>
           </div>
-          <div style="padding:18px; font-size:13px; color:#263238;">
-            <p><strong style="color:#0f172a;">To:</strong> ${notification.recipient} (Founder's Office &amp; COO)</p>
+          <div style="padding:16px; font-size:12px; color:#263238;">
+            <p><strong style="color:#0f172a;">To:</strong> ${notification.recipient} (Founder's Office)</p>
             <p><strong style="color:#0f172a;">Task:</strong> ${notification.taskName} (Cycle: <code>${notification.cycleId}</code>)</p>
             <p><strong style="color:#0f172a;">Reason:</strong> ${notification.reason}</p>
-            <p><strong style="color:#0f172a;">Logged Timestamp:</strong> ${notification.timestamp}</p>
-            <div style="margin-top:14px; padding:12px; background:#fff1f2; border-left:4px solid #e11d48; font-size:12px; color:#9f1239;">
-              <strong>Executive Attention Required:</strong> Please review with Operations Manager to unblock warehouse dispatches and inventory sync.
+            <p><strong style="color:#0f172a;">Timestamp:</strong> ${notification.timestamp}</p>
+            <div style="margin-top:12px; padding:10px; background:#fff1f2; border-left:4px solid #e11d48; font-size:11px; color:#9f1239;">
+              <strong>Executive Attention:</strong> Escalated to Founder's Office per 24-hour unacknowledged breach SLA.
             </div>
           </div>
         </div>
@@ -826,17 +729,16 @@
     } else {
       emailHtml = `
         <div style="font-family:sans-serif; background:#ffffff; border:1px solid #dcedc8; border-radius:8px; overflow:hidden;">
-          <div style="background:#7cb342; color:#fff; padding:14px 18px;">
-            <div style="font-size:18px; font-weight:800; letter-spacing:-0.03em;">allo🌿 <span style="font-size:10px; font-weight:700; letter-spacing:0.2em;">INNOWARE</span></div>
-            <h4 style="margin:4px 0 0 0; font-size:14px;">Daily Operations Sentinel Alert</h4>
+          <div style="background:#7cb342; color:#fff; padding:12px 16px;">
+            <div style="font-size:16px; font-weight:800;">allo🌿 <span style="font-size:10px; font-weight:700; letter-spacing:0.2em;">INNOWARE</span></div>
+            <h4 style="margin:2px 0 0 0; font-size:13px;">Daily Operations Sentinel Alert</h4>
             <small style="color:#f1f8e9;">Notification: ${notification.alertType}</small>
           </div>
-          <div style="padding:18px; font-size:13px; color:#263238;">
+          <div style="padding:16px; font-size:12px; color:#263238;">
             <p><strong style="color:#0f172a;">To:</strong> ${notification.recipient}</p>
-            <p><strong style="color:#0f172a;">Operational Task:</strong> ${notification.taskName} (<code>${notification.cycleId}</code>)</p>
-            <p><strong style="color:#0f172a;">Event Detail:</strong> ${notification.reason}</p>
+            <p><strong style="color:#0f172a;">Task:</strong> ${notification.taskName} (<code>${notification.cycleId}</code>)</p>
+            <p><strong style="color:#0f172a;">Reason:</strong> ${notification.reason}</p>
             <p><strong style="color:#0f172a;">Timestamp:</strong> ${notification.timestamp}</p>
-            <p style="color:#607d8b; font-size:11px; margin-top:14px;">Automated notification generated by Allo Innoware Operations Sentinel.</p>
           </div>
         </div>
       `;
@@ -929,12 +831,12 @@
 
       // Test 2: Single-point completion
       try {
-        const cardCompleteBtn = document.querySelector('.btn-card-complete');
-        const pendingInput = document.querySelector('.product-proof-input');
+        const pendingInput = document.querySelector('.input-table');
+        const pendingBtn = document.querySelector('.btn-mark-complete');
         results.push({
           num: 2,
           name: 'Test 2: Single-Point Completion Console',
-          pass: !!cardCompleteBtn && !!pendingInput,
+          pass: !!pendingInput && !!pendingBtn,
           details: 'Verified that employees can input Ticket ID / WhatsApp verification and complete tasks in one unified view without multi-sheet navigation.'
         });
       } catch (e) {
@@ -994,7 +896,6 @@
         task4.managerAck = 'None';
         task4.leadershipEscalated = false;
 
-        // Add backdated alert >24h ago
         state.notificationLogs.unshift({
           notificationId: 'NOTIF-TEST-OLD',
           timestamp: getTimestampString(-26),
@@ -1051,7 +952,6 @@
 
       if (progressBar) progressBar.style.width = '100%';
 
-      // Render cards
       resultsContainer.innerHTML = '';
       const passedCount = results.filter(r => r.pass).length;
 
@@ -1075,10 +975,10 @@
 
   // --- Attach Event Listeners ---
   function setupEvents() {
-    // 1. Tab Navigation Switching
-    document.querySelectorAll('.nav-tab-btn, .nav-tab').forEach(tab => {
+    // 1. Tab Switching
+    document.querySelectorAll('.nav-tab-btn').forEach(tab => {
       tab.addEventListener('click', function () {
-        document.querySelectorAll('.nav-tab-btn, .nav-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-tab-btn').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
 
         this.classList.add('active');
@@ -1088,31 +988,7 @@
       });
     });
 
-    // 2. View Toggle (Cards vs Table)
-    const btnCards = document.getElementById('btnViewCards');
-    const btnTable = document.getElementById('btnViewTable');
-    const cardsWrap = document.getElementById('employeeCardsContainer');
-    const tableWrap = document.getElementById('employeeTableContainer');
-
-    if (btnCards && btnTable && cardsWrap && tableWrap) {
-      btnCards.addEventListener('click', () => {
-        btnCards.classList.add('active');
-        btnTable.classList.remove('active');
-        cardsWrap.style.display = 'grid';
-        tableWrap.style.display = 'none';
-        state.activeView = 'cards';
-      });
-
-      btnTable.addEventListener('click', () => {
-        btnTable.classList.add('active');
-        btnCards.classList.remove('active');
-        cardsWrap.style.display = 'none';
-        tableWrap.style.display = 'block';
-        state.activeView = 'table';
-      });
-    }
-
-    // 3. Employee Filter Pills
+    // 2. Employee Filter Pills
     const filterContainer = document.getElementById('employeeFilterPills');
     if (filterContainer) {
       filterContainer.querySelectorAll('.allo-pill-btn').forEach(btn => {
@@ -1125,170 +1001,53 @@
       });
     }
 
-    // 4. "Explore Our Operational Cadences" Category Circles
-    document.querySelectorAll('.explore-circle-card').forEach(circle => {
-      circle.addEventListener('click', function () {
-        const targetTab = this.getAttribute('data-tab');
-        const targetFilter = this.getAttribute('data-filter');
-
-        if (targetTab) {
-          // Switch tab
-          document.querySelectorAll('.nav-tab-btn').forEach(t => t.classList.remove('active'));
-          document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-
-          const tabBtn = document.querySelector(`.nav-tab-btn[data-tab="${targetTab}"]`);
-          const tabPane = document.getElementById(targetTab);
-          if (tabBtn) tabBtn.classList.add('active');
-          if (tabPane) tabPane.classList.add('active');
-        }
-
-        if (targetFilter) {
-          state.selectedEmployeeFilter = targetFilter;
-          const pills = document.querySelectorAll('#employeeFilterPills .allo-pill-btn');
-          pills.forEach(p => {
-            if (p.getAttribute('data-filter') === targetFilter) {
-              p.classList.add('active');
-            } else {
-              p.classList.remove('active');
-            }
-          });
-          renderEmployeeConsole();
-        }
-
-        // Smooth scroll down to main content
-        const mainElem = document.querySelector('.page-container');
-        if (mainElem) {
-          mainElem.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    });
-
-    // 5. Store Nav Links (Top Header Category Links)
-    document.querySelectorAll('.store-nav-link').forEach(link => {
-      link.addEventListener('click', function () {
-        const cat = this.getAttribute('data-cat');
-        // Switch to Employee Console
-        document.querySelectorAll('.nav-tab-btn').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-        const empTab = document.querySelector('.nav-tab-btn[data-tab="tabEmployeeReport"]');
-        const empPane = document.getElementById('tabEmployeeReport');
-        if (empTab) empTab.classList.add('active');
-        if (empPane) empPane.classList.add('active');
-
-        if (cat === 'storage') state.selectedEmployeeFilter = 'Employee A';
-        else if (cat === 'cookware') state.selectedEmployeeFilter = 'Employee B';
-        else if (cat === 'lunchbox') state.selectedEmployeeFilter = 'Employee C';
-        else if (cat === 'bakeware') state.selectedEmployeeFilter = 'Employee D';
-        else state.selectedEmployeeFilter = 'All';
-
-        const pills = document.querySelectorAll('#employeeFilterPills .allo-pill-btn');
-        pills.forEach(p => {
-          if (p.getAttribute('data-filter') === state.selectedEmployeeFilter) p.classList.add('active');
-          else p.classList.remove('active');
-        });
-
-        renderEmployeeConsole();
-        const mainElem = document.querySelector('.page-container');
-        if (mainElem) mainElem.scrollIntoView({ behavior: 'smooth' });
-      });
-    });
-
-    // 6. Hero Banner Buttons
-    const heroBtnCheck = document.getElementById('heroBtnCheck');
-    if (heroBtnCheck) heroBtnCheck.addEventListener('click', checkOverdueAndEscalations);
-
-    const heroBtnWa = document.getElementById('heroBtnWa');
-    if (heroBtnWa) {
-      heroBtnWa.addEventListener('click', () => {
-        const btnWa = document.getElementById('btnFloatingWhatsApp');
-        if (btnWa) btnWa.click();
-      });
-    }
-
-    const heroBtnTests = document.getElementById('heroBtnTests');
-    if (heroBtnTests) {
-      heroBtnTests.addEventListener('click', () => {
-        document.querySelectorAll('.nav-tab-btn').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-        const testTab = document.querySelector('.nav-tab-btn[data-tab="tabTests"]');
-        const testPane = document.getElementById('tabTests');
-        if (testTab) testTab.classList.add('active');
-        if (testPane) testPane.classList.add('active');
-        runAllTests();
-        const mainElem = document.querySelector('.page-container');
-        if (mainElem) mainElem.scrollIntoView({ behavior: 'smooth' });
-      });
-    }
-
-    // 7. Global Search Input
-    const globalSearch = document.getElementById('globalSearchInput');
-    if (globalSearch) {
-      globalSearch.addEventListener('input', function () {
+    // 3. Search Filter
+    const searchInput = document.getElementById('employeeSearchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', function () {
         state.searchQuery = this.value.trim();
         renderEmployeeConsole();
       });
     }
 
-    // 8. Floating WhatsApp Button
-    const btnWa = document.getElementById('btnFloatingWhatsApp');
-    if (btnWa) {
-      btnWa.addEventListener('click', function () {
-        document.querySelectorAll('.nav-tab-btn').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    // 4. Quick WhatsApp Logger Buttons (both header button and floating button)
+    function triggerQuickWhatsApp() {
+      // Switch to Employee Console
+      document.querySelectorAll('.nav-tab-btn').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      const empTab = document.querySelector('.nav-tab-btn[data-tab="tabEmployeeReport"]');
+      const empPane = document.getElementById('tabEmployeeReport');
+      if (empTab) empTab.classList.add('active');
+      if (empPane) empPane.classList.add('active');
 
-        const empTab = document.querySelector('[data-tab="tabEmployeeReport"]');
-        const empPane = document.getElementById('tabEmployeeReport');
-        if (empTab) empTab.classList.add('active');
-        if (empPane) empPane.classList.add('active');
+      state.selectedEmployeeFilter = 'Employee A';
+      const pills = document.querySelectorAll('#employeeFilterPills .allo-pill-btn');
+      pills.forEach(p => {
+        if (p.getAttribute('data-filter') === 'Employee A') p.classList.add('active');
+        else p.classList.remove('active');
+      });
 
-        state.selectedEmployeeFilter = 'Employee A';
-        const pills = document.querySelectorAll('#employeeFilterPills .allo-pill-btn');
-        pills.forEach(p => {
-          if (p.getAttribute('data-filter') === 'Employee A') {
-            p.classList.add('active');
-          } else {
-            p.classList.remove('active');
-          }
-        });
+      renderEmployeeConsole();
 
-        renderEmployeeConsole();
-
-        const cardInput = document.getElementById('card_input_TSK-001');
-        const tableInput = document.getElementById('input_proof_TSK-001');
-        const val = 'WA-1730-Borosilicate-Dispatched-184Sets-0Exceptions';
-        if (cardInput) {
-          cardInput.value = val;
-          cardInput.focus();
-        }
-        if (tableInput) tableInput.value = val;
-
-        const mainElem = document.querySelector('.page-container');
-        if (mainElem) mainElem.scrollIntoView({ behavior: 'smooth' });
-
+      const input = document.getElementById('input_proof_TSK-001');
+      if (input) {
+        input.value = 'WA-1730-Borosilicate-Dispatched-184Sets-0Exceptions';
+        input.focus();
         showToast('💬 Pre-filled WhatsApp Daily Dispatch update. Click Complete to log!');
-      });
+      }
     }
 
-    // 9. Floating Scroll-To-Top Button
-    const btnScrollTop = document.getElementById('btnScrollTop');
-    if (btnScrollTop) {
-      btnScrollTop.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
+    const btnQuickWa = document.getElementById('btnQuickWa');
+    if (btnQuickWa) btnQuickWa.addEventListener('click', triggerQuickWhatsApp);
 
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 250) {
-          btnScrollTop.style.display = 'flex';
-        } else {
-          btnScrollTop.style.display = 'none';
-        }
-      });
-    }
+    const btnFloatingWa = document.getElementById('btnFloatingWhatsApp');
+    if (btnFloatingWa) btnFloatingWa.addEventListener('click', triggerQuickWhatsApp);
 
-    // 10. Header Action Buttons
+    // 5. Check Deadlines Button
     const btnCheck = document.getElementById('btnCheckOverdue');
     if (btnCheck) btnCheck.addEventListener('click', checkOverdueAndEscalations);
 
+    // 6. Simulate Overdue Button
     const btnSimulate = document.getElementById('btnSimulateOverdue');
     if (btnSimulate) {
       btnSimulate.addEventListener('click', function () {
@@ -1303,6 +1062,7 @@
       });
     }
 
+    // 7. Reset Button
     const btnReset = document.getElementById('btnResetData');
     if (btnReset) {
       btnReset.addEventListener('click', function () {
@@ -1315,14 +1075,14 @@
       });
     }
 
-    // 11. Export Buttons
+    // 8. Export Buttons
     const btnCsv = document.getElementById('btnExportCsv');
     if (btnCsv) btnCsv.addEventListener('click', exportCsv);
 
     const btnJson = document.getElementById('btnExportJson');
     if (btnJson) btnJson.addEventListener('click', exportJson);
 
-    // 12. Manager Action Form Submission
+    // 9. Manager Action Form
     const mgrForm = document.getElementById('managerActionForm');
     if (mgrForm) {
       mgrForm.addEventListener('submit', function (e) {
@@ -1335,7 +1095,7 @@
       });
     }
 
-    // 13. Settings Form Submission
+    // 10. Settings Form
     const settingsForm = document.getElementById('settingsForm');
     if (settingsForm) {
       settingsForm.addEventListener('submit', function (e) {
@@ -1352,11 +1112,11 @@
       });
     }
 
-    // 14. Test Suite Execution Button
+    // 11. Run All Tests Button
     const btnTests = document.getElementById('btnRunAllTests');
     if (btnTests) btnTests.addEventListener('click', runAllTests);
 
-    // 15. Email Modal Close Handlers
+    // 12. Modal Close Handlers
     const btnClose1 = document.getElementById('btnModalClose');
     const btnClose2 = document.getElementById('btnModalCloseFooter');
     if (btnClose1) btnClose1.addEventListener('click', closeEmailModal);
@@ -1369,7 +1129,7 @@
       });
     }
 
-    // KPI Cards Click Handlers
+    // 13. KPI Cards Click to Switch Tab
     document.querySelectorAll('.ops-kpi-card[data-tab]').forEach(kpi => {
       kpi.addEventListener('click', function () {
         const targetTab = this.getAttribute('data-tab');
@@ -1391,7 +1151,6 @@
     renderAll();
     setupEvents();
 
-    // Start live countdown timer (ticking every second)
     updateCountdownTimer();
     setInterval(updateCountdownTimer, 1000);
   });
