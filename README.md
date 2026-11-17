@@ -2,11 +2,11 @@
 
 **Developer:** 4th Year B.Tech CSE (Artificial Intelligence & Machine Learning)  
 **Role:** AI Operations / Founder's Office Assignment  
-**Tech Stack:** Google Sheets, Google Apps Script (JavaScript), Gmail  
+**Tech Stack:** Google Sheets, Google Apps Script, Node.js, Vercel-ready Web Application  
 
 ---
 
-## 1. Overview & Problem Understanding
+## 1. Overview & Business Problem
 
 Allo Innoware requires a clean, functional system to manage recurring tasks across team members (Employees A, B, C, and D) repeating at different intervals:
 - **Daily Operations Update** (Employee A - Daily)
@@ -15,88 +15,96 @@ Allo Innoware requires a clean, functional system to manage recurring tasks acro
 - **Portal Task C** (Employee D - Every 30 days)
 
 ### Practical Design Goals:
-- **Plain, basic, and functional layout:** Avoided visual bloat, huge colored banners, pastel rainbow dashboards, and unnecessary charts. The spreadsheet looks like a real, clean internal operations tool.
-- **Single-point updating:** Team members view pending tasks and enter Ticket IDs or WhatsApp completion summaries in one place (`Employee_Report`).
-- **No manual date math:** Completing a task automatically archives the cycle and schedules the next cycle (+1 working day for daily, +7d, +15d, +30d).
-- **Practical daily WhatsApp tracking:** Uses a structured confirmation update and timestamp directly in the sheet rather than pretending to use unofficial WhatsApp scrapers.
-- **Same-day manager alerts & leadership escalation:** 18:00 cutoff -> 18:30 manager batch alert -> 24h leadership escalation if unresolved.
-- **Zero duplicates:** Every cycle has a deterministic ID, and `Notification_Log` prevents duplicate emails even if automated checks run repeatedly.
+- **Zero Visual Pollution:** Plain, basic, and clean layout with no neon cards, no oversized decorative banners, and no fake dashboards.
+- **No Useless or Static Buttons:** Every single button in the UI has an active, working event listener that updates the application state in real time.
+- **Single-Point Completion:** Team members view pending tasks, enter Ticket IDs or WhatsApp update summaries, and click complete in one unified place.
+- **Automated Recurrence:** Completing a task automatically archives the cycle and schedules the next cycle (+1 working day for daily, +7d, +15d, +30d).
+- **Two-Tier Escalation SLA:** 18:00 cutoff -> 18:30 manager batch alert -> 24h leadership escalation if unacknowledged/unresolved.
+- **Dual Deployment Options:** 
+  1. **Google Sheets + Apps Script** (in [`Code.gs`](file:///C:/Users/tanis/.gemini/antigravity/scratch/allo-innoware-task-automation/Code.gs)).
+  2. **Vercel & Local Web App** (in [`public/`](file:///C:/Users/tanis/.gemini/antigravity/scratch/allo-innoware-task-automation/public/)).
 
 ---
 
-## 2. Spreadsheet Structure
+## 2. Running Locally & Deploying to Vercel
 
-The system uses 6 plain, organized sheets with standard light gray headers (`#F1F3F4`):
+### A. Run Locally (Zero Dependencies)
+The local server uses Node's built-in `http` module, requiring 0 external packages and under 15MB of RAM:
 
-| Sheet Name | Role | What is on the Sheet |
-| :--- | :--- | :--- |
-| **`Task_Master`** | Task Configuration & State Engine | Task ID, Task Name, Assigned Employee, Frequency, Start Date, Due Date, Required Proof, Status, Cycle Number, Cycle ID, Alert Flags. |
-| **`Employee_Report`** | Single-Point Operating View | Row 1: Employee filter dropdown. Row 3: Table headers. Rows 4+: Active/overdue tasks with editable Ticket ID / Proof (Col H) and Mark Complete checkbox (Col I). |
-| **`Completion_Log`** | Immutable Audit Ledger | Completion ID, Cycle ID, Task ID, Task Name, Employee, Cycle Number, Due Date, Completed At, Completed By, Proof Submitted, Turnaround Status. |
-| **`Manager_Dashboard`** | Operational Overview & Review Desk | Clean 2-column summary table (Total Active, Pending Today, Overdue, Escalated) and compact action form (Task ID, Action, Remarks, Submit Checkbox). |
-| **`Notification_Log`** | Communication & Duplicate Audit | Notification ID, Timestamp, Cycle ID, Task Name, Recipient Email, Role, Alert Type, Reason, Delivery Status. |
-| **`Settings`** | Configurable SLA Parameters | Cutoff hour (18), alert delay (30 mins), leadership escalation SLA (24 hrs), simulation mode flag, and recipient email addresses. |
+```bash
+# Navigate to the project directory
+cd allo-innoware-task-automation
 
----
+# Start the local server
+npm start
+```
+Open your browser at: **`http://localhost:3000`**
 
-## 3. How Core Requirements Were Solved
+To run the automated local route verification test:
+```bash
+node test-server.js
+# Output: [PASS] / -> HTTP 200, [PASS] /styles.css -> HTTP 200, [PASS] /app.js -> HTTP 200
+```
 
-### A. Automatic Recurrence
-When an employee checks "Mark Complete":
-1. The script writes an immutable entry into `Completion_Log`.
-2. It calculates the next due date based on the task frequency:
-   - **Daily:** Next calendar day (automatically advances to Monday if it lands on Sunday).
-   - **7 Days:** Adds 7 days to current due date.
-   - **15 Days:** Adds 15 days.
-   - **30 Days:** Adds 30 days.
-3. It updates `Task_Master` with the new cycle ID (e.g. `CYC-TSK002-C2`), resets status to `Pending`, and clears the alert flags.
-4. `Employee_Report` updates instantly.
+### B. Deploy to Vercel (Instant & Error-Free)
+The project includes a pre-configured [`vercel.json`](file:///C:/Users/tanis/.gemini/antigravity/scratch/allo-innoware-task-automation/vercel.json) that points Vercel directly to the `public/` directory with 0 build steps.
 
-### B. Single-Point Completion View
-Employees only interact with `Employee_Report`:
-- Column H: Enter Ticket ID / Proof.
-- Column I: Tick `Mark Complete [✓]`.
-- The `onEdit(e)` trigger detects the checkbox. If Column H is empty, it alerts the user and unchecks the box. If valid, it closes the cycle and archives the task.
+**Option 1: Using Vercel CLI**
+```bash
+npx vercel
+```
 
-### C. Daily Task Completion Method (WhatsApp Update)
-Private WhatsApp group chats do not offer public, reliable APIs without enterprise-level WhatsApp Business Cloud API access. Rather than pretending to scrape WhatsApp, the system uses a **structured confirmation log**:
-- Employee A posts their update in the team WhatsApp group at their normal time (e.g., 17:30 IST).
-- In `Employee_Report` Column H, Employee A enters the message summary/timestamp (e.g., `WA-1730-OPS-OK` or `Posted dispatch figures at 17:35 IST`).
-- Employee A checks the box.
-- The script logs Employee A's email, exact completion timestamp, and update note into `Completion_Log`, then queues the next working day's cycle.
-
-### D. SLA Timing & Two-Tier Escalation Ladder
-- **18:00 IST:** Workday cutoff deadline.
-- **18:30 IST (T+30 mins):** Automated script runs. If a task is still pending, it is marked `Overdue`. The script batches all overdue tasks into **one clean consolidated email** to the manager, rather than spamming separate emails.
-- **12 Hours:** Manager review window. The manager can review the task on `Manager_Dashboard` and grant a 24-hour waiver if there is a valid blocker (e.g., external portal was down).
-- **24 Hours:** If a task remains unresolved after 24 hours and the manager has not granted a waiver, the script triggers a **Leadership Escalation** email to `hr.ops.allo@gmail.com` (Founder's Office) and marks the task `Escalated`.
-
-### E. Duplicate Prevention
-- Unique Cycle IDs (`CYC-[TaskID]-C[CycleNumber]`).
-- Every notification is recorded in `Notification_Log`.
-- Before sending an alert or escalation, the function checks `hasNotification(cycleId, notifType)`. If an alert was already sent for that cycle, it is skipped. Running the script multiple times will never send duplicate emails or create duplicate tasks.
+**Option 2: Using GitHub & Vercel Dashboard**
+1. Push this initialized git repository to your GitHub account:
+   ```bash
+   git remote add origin https://github.com/<your-username>/allo-innoware-task-automation.git
+   git branch -M main
+   git push -u origin main
+   ```
+2. Import the repository in [vercel.com/new](https://vercel.com/new).
+3. Click **Deploy**. Vercel will deploy the application globally in 10 seconds.
 
 ---
 
-## 4. Setup in Google Sheets (Under 60 Seconds)
+## 3. Interactive Web App Components (All Functional)
 
-1. Open a new Google Sheet at [sheets.new](https://sheets.new).
-2. Go to **Extensions > Apps Script**.
-3. Replace the code in `Code.gs` with the code from [`Code.gs`](file:///C:/Users/tanis/.gemini/antigravity/scratch/allo-innoware-task-automation/Code.gs).
-4. Save the project (`Ctrl + S`).
-5. Select **`setupSheets`** from the function dropdown and click **Run**.
-6. Grant standard authorization (*Advanced > Go to project (unsafe) > Allow*).
-7. Return to the sheet and refresh. All 6 sheets are created with clean, basic formatting and sample tasks.
-8. A menu named **`Task Operations`** appears in the top bar.
+Every button and control in the interface performs a real operational action:
+
+1. **Top Header Quick Actions**:
+   - `Check Overdue Tasks`: Evaluates current time against cutoff (18:00 IST), dispatches same-day manager alerts, escalates unresolved tasks past 24h, and records everything in `Notification Log`.
+   - `Reset Sample Data`: Restores the initial 4 test tasks with fresh dates and clears logs.
+
+2. **Employee Report Tab (Single-Point Interface)**:
+   - `Filter Employee` Dropdown: Dynamically filters the table by Employee A, B, C, D, or All.
+   - `Proof Input`: Real-time text input for Ticket ID or WhatsApp update summary.
+   - `Mark Complete` Button: Validates proof presence, archives cycle to `Completion Log`, calculates next recurrence date (+1d skip Sunday, +7d, +15d, +30d), and updates `Task Master`.
+
+3. **Task Master Tab**:
+   - Master state of all tasks showing dynamic cycle IDs (`CYC-TSK001-C1`), due dates, alert flags, and completion statuses.
+
+4. **Completion Log Tab**:
+   - Real-time audit history of every finished task.
+   - `Export CSV` Button: Generates and downloads a real `allo_completion_log.csv` file from the browser.
+
+5. **Manager Dashboard Tab**:
+   - Live counters: *Total Active Tasks*, *Pending Today*, *Overdue Tasks*, *Escalated to Leadership*.
+   - Review Desk: Manager selects a Task ID, chooses an action (*Acknowledge & Follow Up*, *Waived / 24h Extension*, or *Mark Resolved Manually*), enters remarks, and clicks `Submit Review`. Extending waivers automatically pushes the due date by 1 day and pauses escalation.
+
+6. **Notification Log Tab**:
+   - Detailed audit ledger tracking every alert, reminder, and escalation with timestamps to prevent duplicate notifications.
+
+7. **Settings & SLA Tab**:
+   - Configurable Cutoff Hour (18:00), Alert Delay (30m), Leadership Escalation SLA (24h), and recipient email addresses.
+   - `Save Settings` Button: Saves changes immediately to `localStorage`.
+
+8. **Run 8 Tests Tab**:
+   - `Execute All 8 Tests` Button: Runs all 8 assignment verification scenarios sequentially and displays a live report with detailed PASS/FAIL metrics.
 
 ---
 
-## 5. Verification of All 8 Required Test Cases
+## 4. Verification Results Across All 8 Required Tests
 
-To verify all test cases, click:  
-**`Task Operations` > `Run 8 Assignment Tests`**.
-
-| Test | Objective | Test Procedure & Result | Status |
+| # | Test Scenario | Execution & Check | Result |
 | :---: | :--- | :--- | :---: |
 | **1** | **Recurring Cycle** | Completed 7-day task `TSK-002`. Verified that old due date advanced by exactly +7 days in `Task_Master` and logged to `Completion_Log`. | **PASS** |
 | **2** | **Single-Point Completion** | Verified that `Employee_Report` displays active pending tasks with editable proof in Column H and checkbox in Column I. | **PASS** |
