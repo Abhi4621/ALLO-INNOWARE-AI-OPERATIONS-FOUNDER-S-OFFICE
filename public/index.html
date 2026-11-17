@@ -11,32 +11,32 @@
   <!-- Top Navigation Header -->
   <header class="top-header">
     <div class="brand-section">
-      <div class="logo-badge">AI</div>
+      <div class="logo-badge">ALLO</div>
       <div class="brand-titles">
         <h1>Allo Innoware</h1>
         <p>AI Operations / Founder's Office Sentinel Engine</p>
       </div>
     </div>
 
-    <!-- Live Cutoff Countdown Widget -->
+    <!-- Operational Cutoff Countdown -->
     <div class="header-center">
       <div class="countdown-box" title="Real-time countdown to daily 18:00 IST task cutoff">
         <span class="pulse-dot"></span>
-        <span>18:00 IST Cutoff:</span>
-        <strong id="cutoffCountdownText">--:--:--</strong>
+        <span>Cutoff (18:00 IST):</span>
+        <strong id="cutoffCountdownText" style="font-family:var(--font-mono); color:#ffffff;">--:--:--</strong>
       </div>
     </div>
 
-    <!-- Global Operational Action Buttons -->
+    <!-- Actions -->
     <div class="header-actions">
       <button id="btnCheckOverdue" class="btn btn-primary" title="Evaluate deadlines, fire manager alerts, and check 24h SLA escalations">
-        ⚡ Check Overdue & SLAs
+        Check Deadlines & SLAs
       </button>
       <button id="btnSimulateOverdue" class="btn" title="Simulate an overdue scenario for Employee C to test manager alert">
-        🧪 Inject Overdue Test
+        Inject Overdue Test
       </button>
       <button id="btnResetData" class="btn btn-danger btn-sm" title="Reset all task cycles to initial default state">
-        ↺ Reset Data
+        Reset
       </button>
     </div>
   </header>
@@ -44,68 +44,79 @@
   <!-- Navigation Tab Bar -->
   <nav class="nav-bar">
     <button class="nav-tab active" data-tab="tabEmployeeReport">
-      📋 Employee Console
+      Employee Console
     </button>
     <button class="nav-tab" data-tab="tabTaskMaster">
-      ⚙️ Task Master <span class="tab-badge" id="badgeTaskCount">4</span>
+      Task Master <span class="tab-badge" id="badgeTaskCount">4</span>
     </button>
     <button class="nav-tab" data-tab="tabCompletionLog">
-      📜 Completion Log <span class="tab-badge" id="badgeLogCount">0</span>
+      Completion Log <span class="tab-badge" id="badgeLogCount">0</span>
     </button>
     <button class="nav-tab" data-tab="tabManagerDashboard">
-      📊 Manager Control Tower <span class="tab-badge" id="badgeOverdueCount" style="color:#b91c1c;">0</span>
+      Manager Control Tower <span class="tab-badge" id="badgeOverdueCount" style="color:#f87171;">0</span>
     </button>
     <button class="nav-tab" data-tab="tabNotificationLog">
-      🔔 Notification Log <span class="tab-badge" id="badgeNotifCount">0</span>
+      Notification Log <span class="tab-badge" id="badgeNotifCount">0</span>
     </button>
     <button class="nav-tab" data-tab="tabSettings">
-      ⚙️ SLA Settings
+      SLA Settings
     </button>
-    <button class="nav-tab" data-tab="tabTests" style="color:#4f46e5; font-weight:600;">
-      🧪 Automated Test Suite (8)
+    <button class="nav-tab" data-tab="tabTests" style="color:var(--aws-orange); font-weight:600;">
+      Automated Test Suite (8)
     </button>
   </nav>
 
   <!-- Main Container -->
   <main class="container">
 
-    <!-- KPI Metrics Banner -->
+    <!-- KPI Metric Cards (AWS Enterprise Cloud Style) -->
     <section class="kpi-grid">
-      <div class="kpi-card kpi-indigo">
-        <div class="kpi-icon">📋</div>
-        <div class="kpi-info">
-          <p>Active Task Cycles</p>
-          <h3 id="statTotalActive">4</h3>
-          <span class="kpi-tag">100% Tracking Active</span>
+      <div class="kpi-card kpi-blue">
+        <div class="kpi-header">
+          <span class="kpi-title">Active Cycles</span>
+          <span style="color:var(--aws-blue); font-size:16px;">⟳</span>
+        </div>
+        <div class="kpi-val" id="statTotalActive">4</div>
+        <div class="kpi-footer" style="color:var(--text-muted);">
+          <span>Scheduled & Active</span>
         </div>
       </div>
-      <div class="kpi-card kpi-emerald">
-        <div class="kpi-icon">✅</div>
-        <div class="kpi-info">
-          <p>Cycles Completed</p>
-          <h3 id="statTotalCompleted">0</h3>
-          <span class="kpi-tag" id="statCompletedRate">0% SLA Met</span>
+
+      <div class="kpi-card kpi-green">
+        <div class="kpi-header">
+          <span class="kpi-title">Cycles Completed</span>
+          <span style="color:#10b981; font-size:16px;">✓</span>
+        </div>
+        <div class="kpi-val" id="statTotalCompleted">0</div>
+        <div class="kpi-footer" style="color:#34d399;" id="statCompletedRate">
+          <span>0% Audit Verified</span>
         </div>
       </div>
-      <div class="kpi-card kpi-amber">
-        <div class="kpi-icon">⚠️</div>
-        <div class="kpi-info">
-          <p>Overdue Tasks (Level 1)</p>
-          <h3 id="statOverdue">0</h3>
-          <span class="kpi-tag">Same-Day Manager Alert</span>
+
+      <div class="kpi-card kpi-orange">
+        <div class="kpi-header">
+          <span class="kpi-title">Overdue (Level 1 Alert)</span>
+          <span style="color:var(--aws-orange); font-size:16px;">⚠</span>
+        </div>
+        <div class="kpi-val" id="statOverdue" style="color:#f59e0b;">0</div>
+        <div class="kpi-footer" style="color:var(--aws-orange);">
+          <span>Same-Day Manager Alert</span>
         </div>
       </div>
-      <div class="kpi-card kpi-rose">
-        <div class="kpi-icon">🚨</div>
-        <div class="kpi-info">
-          <p>Leadership Escalated</p>
-          <h3 id="statEscalated">0</h3>
-          <span class="kpi-tag">Level 2 SLA Breached (>24h)</span>
+
+      <div class="kpi-card kpi-red">
+        <div class="kpi-header">
+          <span class="kpi-title">Leadership Escalation</span>
+          <span style="color:#ef4444; font-size:16px;">🚨</span>
+        </div>
+        <div class="kpi-val" id="statEscalated" style="color:#f87171;">0</div>
+        <div class="kpi-footer" style="color:#f87171;">
+          <span>SLA Breach (>24h Unresolved)</span>
         </div>
       </div>
     </section>
 
-    <!-- 1. Employee Console Tab (Single-Point Execution) -->
+    <!-- 1. Employee Console Tab (Single-Point Interface) -->
     <section id="tabEmployeeReport" class="tab-pane active">
       <div class="section-header">
         <div>
@@ -117,8 +128,8 @@
       <div class="table-card">
         <div class="table-toolbar">
           <div class="search-input-box">
-            <span style="color:#94a3b8; margin-right:6px;">🔍</span>
-            <input type="text" id="employeeSearchInput" placeholder="Search tasks, IDs, or assignees...">
+            <span style="color:var(--text-muted); margin-right:8px;">🔍</span>
+            <input type="text" id="employeeSearchInput" placeholder="Filter by Task ID, name, or assignee...">
           </div>
           <div class="filter-pills" id="employeeFilterPills">
             <button class="filter-btn active" data-filter="All">All Assignees</button>
@@ -158,7 +169,7 @@
       <div class="section-header">
         <div>
           <h2 class="section-title">Recurring Task Master Registry</h2>
-          <p class="section-subtitle">Core configuration of recurring cadences, active iteration numbers, and state flags.</p>
+          <p class="section-subtitle">Master state of recurring operational tasks and active cycle trackers.</p>
         </div>
       </div>
 
@@ -197,8 +208,8 @@
           <p class="section-subtitle">Permanent audit trail of all finished task iterations with submitted proof and turnaround performance.</p>
         </div>
         <div style="display:flex; gap:8px;">
-          <button id="btnExportCsv" class="btn btn-sm">📥 Export CSV</button>
-          <button id="btnExportJson" class="btn btn-sm">📄 Export JSON</button>
+          <button id="btnExportCsv" class="btn btn-sm">Export CSV</button>
+          <button id="btnExportJson" class="btn btn-sm">Export JSON</button>
         </div>
       </div>
 
@@ -232,8 +243,8 @@
       <div class="grid-2">
         <!-- Live Overdue & Escalation Watchlist -->
         <div class="table-card">
-          <div class="table-toolbar" style="background:#f8fafc;">
-            <strong style="font-size:13px; color:#0f172a;">⚠️ Active Overdue & Escalation Watchlist</strong>
+          <div class="table-toolbar">
+            <strong style="font-size:13px; color:#ffffff;">Active Overdue & Escalation Watchlist</strong>
             <span class="badge badge-overdue" id="watchlistCountBadge">0 Flagged</span>
           </div>
           <div class="table-responsive">
@@ -258,7 +269,7 @@
         <div class="form-card">
           <div class="section-header" style="margin-bottom:12px;">
             <div>
-              <h3 class="section-title" style="font-size:14px;">⚡ Manager Action & Acknowledgement Desk</h3>
+              <h3 class="section-title" style="font-size:14px;">Manager Action & Acknowledgement Desk</h3>
               <p class="section-subtitle">Log reviews, grant 24h operational waivers, or resolve tasks.</p>
             </div>
           </div>
@@ -391,7 +402,7 @@
           </div>
         </div>
         <button id="btnRunAllTests" class="btn btn-primary" style="font-size:13px; padding:10px 18px;">
-          ▶ Execute All 8 Verification Tests
+          Execute All 8 Verification Tests
         </button>
       </div>
 
@@ -406,7 +417,7 @@
   <div class="modal-overlay" id="emailModal">
     <div class="modal-content">
       <div class="modal-header">
-        <strong id="modalEmailSubject" style="font-size:14px; color:#0f172a;">Email Notification Preview</strong>
+        <strong id="modalEmailSubject" style="font-size:13px; color:#ffffff;">Email Notification Preview</strong>
         <button id="btnModalClose" class="btn btn-sm" style="padding:2px 8px;">✕</button>
       </div>
       <div class="modal-body" id="modalEmailBody">
@@ -420,7 +431,7 @@
 
   <!-- Notification Toast -->
   <div id="toast">
-    <span>✓</span>
+    <span style="color:#10b981;">✓</span>
     <span id="toastMsg">Action completed successfully</span>
   </div>
 

@@ -714,17 +714,17 @@
     let emailHtml = '';
     if (isEscalation) {
       emailHtml = `
-        <div style="font-family:sans-serif; border:1px solid #fca5a5; border-radius:6px; overflow:hidden;">
+        <div style="font-family:sans-serif; background:#111827; border:1px solid rgba(239,68,68,0.4); border-radius:6px; overflow:hidden;">
           <div style="background:#be123c; color:#fff; padding:12px 16px;">
-            <h4 style="margin:0; font-size:15px;">🚨 Allo Innoware: Leadership Escalation</h4>
-            <small>SLA Breach: Unresolved >24 hours past cutoff</small>
+            <h4 style="margin:0; font-size:14px;">Allo Innoware: Leadership Escalation</h4>
+            <small style="color:#ffe4e6;">SLA Breach: Unresolved >24 hours past cutoff</small>
           </div>
-          <div style="padding:16px; font-size:13px; color:#1e293b;">
-            <p><strong>To:</strong> ${notification.recipient} (Founder's Office)</p>
-            <p><strong>Task:</strong> ${notification.taskName} (Cycle: ${notification.cycleId})</p>
-            <p><strong>Reason:</strong> ${notification.reason}</p>
-            <p><strong>Logged Timestamp:</strong> ${notification.timestamp}</p>
-            <div style="margin-top:14px; padding:10px; background:#fff1f2; border-left:4px solid #f43f5e; font-size:12px;">
+          <div style="padding:16px; font-size:12px; color:#cbd5e1;">
+            <p><strong style="color:#fff;">To:</strong> ${notification.recipient} (Founder's Office)</p>
+            <p><strong style="color:#fff;">Task:</strong> ${notification.taskName} (Cycle: <code>${notification.cycleId}</code>)</p>
+            <p><strong style="color:#fff;">Reason:</strong> ${notification.reason}</p>
+            <p><strong style="color:#fff;">Logged Timestamp:</strong> ${notification.timestamp}</p>
+            <div style="margin-top:14px; padding:10px; background:rgba(239,68,68,0.1); border-left:4px solid #ef4444; font-size:11px; color:#fca5a5;">
               Executive Action Required: Review with Operations Manager to remove operational blockers.
             </div>
           </div>
@@ -732,17 +732,17 @@
       `;
     } else {
       emailHtml = `
-        <div style="font-family:sans-serif; border:1px solid #cbd5e1; border-radius:6px; overflow:hidden;">
-          <div style="background:#1e293b; color:#fff; padding:12px 16px;">
-            <h4 style="margin:0; font-size:15px;">Allo Innoware Operations Sentinel</h4>
-            <small>Notification Type: ${notification.alertType}</small>
+        <div style="font-family:sans-serif; background:#111827; border:1px solid #334155; border-radius:6px; overflow:hidden;">
+          <div style="background:#1e293b; color:#fff; padding:12px 16px; border-bottom:1px solid #334155;">
+            <h4 style="margin:0; font-size:14px; color:#ec7211;">Allo Innoware Operations Sentinel</h4>
+            <small style="color:#94a3b8;">Notification Type: ${notification.alertType}</small>
           </div>
-          <div style="padding:16px; font-size:13px; color:#1e293b;">
-            <p><strong>To:</strong> ${notification.recipient}</p>
-            <p><strong>Subject Task:</strong> ${notification.taskName} (${notification.cycleId})</p>
-            <p><strong>Event Detail:</strong> ${notification.reason}</p>
-            <p><strong>Timestamp:</strong> ${notification.timestamp}</p>
-            <p style="color:#64748b; font-size:12px; margin-top:12px;">Dispatched automatically by the Allo Innoware SLA Engine.</p>
+          <div style="padding:16px; font-size:12px; color:#cbd5e1;">
+            <p><strong style="color:#fff;">To:</strong> ${notification.recipient}</p>
+            <p><strong style="color:#fff;">Subject Task:</strong> ${notification.taskName} (<code>${notification.cycleId}</code>)</p>
+            <p><strong style="color:#fff;">Event Detail:</strong> ${notification.reason}</p>
+            <p><strong style="color:#fff;">Timestamp:</strong> ${notification.timestamp}</p>
+            <p style="color:#64748b; font-size:11px; margin-top:12px;">Dispatched automatically by the Allo Innoware SLA Engine.</p>
           </div>
         </div>
       `;
