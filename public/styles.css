@@ -617,7 +617,122 @@ tr:hover td {
 }
 
 /* ==========================================================================
-   7. MANAGER DESK & SETTINGS FORMS
+   7. REVIEWS SECTION (Matches Image 3: Loved By Influencers / Team Reviews)
+   ========================================================================== */
+
+.reviews-section {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--allo-border);
+}
+
+.reviews-header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.reviews-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--allo-green);
+}
+
+.reviews-subtitle {
+  font-size: 11px;
+  color: var(--allo-text-muted);
+  margin-top: 2px;
+}
+
+.reviews-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.review-card {
+  background: #ffffff;
+  border: 1px solid var(--allo-border);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.review-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--allo-green);
+  box-shadow: var(--shadow-md);
+}
+
+.review-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.review-stars {
+  color: var(--allo-green);
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.review-badge {
+  font-size: 9px;
+  font-weight: 700;
+  background: var(--allo-green-light);
+  color: var(--allo-green-dark);
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+}
+
+.review-text {
+  font-size: 11px;
+  color: var(--allo-text);
+  line-height: 1.45;
+  margin-bottom: 12px;
+  flex-grow: 1;
+}
+
+.review-author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--allo-border-light);
+}
+
+.review-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--allo-green);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.review-author strong {
+  display: block;
+  font-size: 11px;
+  color: var(--allo-text);
+  line-height: 1.2;
+}
+
+.review-author small {
+  display: block;
+  font-size: 9.5px;
+  color: var(--allo-text-muted);
+}
+
+/* ==========================================================================
+   8. MANAGER DESK & SETTINGS FORMS
    ========================================================================== */
 
 .grid-2 {
@@ -679,7 +794,7 @@ tr:hover td {
 }
 
 /* ==========================================================================
-   8. TEST SUITE TAB
+   9. TEST SUITE TAB
    ========================================================================== */
 
 .test-suite-header-card {
@@ -749,7 +864,7 @@ tr:hover td {
 }
 
 /* ==========================================================================
-   9. FLOATING WHATSAPP BUTTON
+   10. FLOATING WHATSAPP BUTTON
    ========================================================================== */
 
 .floating-whatsapp-btn {
@@ -775,7 +890,7 @@ tr:hover td {
 }
 
 /* ==========================================================================
-   10. MODAL & TOAST
+   11. MODAL & TOAST
    ========================================================================== */
 
 .modal-backdrop {

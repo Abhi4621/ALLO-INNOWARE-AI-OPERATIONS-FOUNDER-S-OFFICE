@@ -285,28 +285,28 @@
 
           <form id="managerActionForm">
             <div class="form-group">
-              <label for="mgrSelectTask">Select Task for Review:</label>
+              <label for="mgrSelectTask">Select Overdue Task for Review:</label>
               <select id="mgrSelectTask">
                 <!-- Populated dynamically -->
               </select>
             </div>
 
             <div class="form-group">
-              <label for="mgrActionType">Review Decision:</label>
+              <label for="mgrActionType">Manager Action Decision:</label>
               <select id="mgrActionType">
                 <option value="Acknowledge &amp; Follow Up">Acknowledge &amp; Follow Up (Record review &amp; notify team)</option>
-                <option value="Waived / 24h Extension">Grant 24-Hour Waiver (Extends due date &amp; pauses escalation)</option>
+                <option value="Waived / 24h Extension">Grant 24-Hour Operational Waiver (Extends due date &amp; pauses escalation)</option>
                 <option value="Mark Resolved Manually">Mark Resolved Manually (Manager verifies completion)</option>
               </select>
             </div>
 
             <div class="form-group">
               <label for="mgrRemarks">Manager Action Notes / Plan:</label>
-              <input type="text" id="mgrRemarks" placeholder="e.g. Warehouse packaging delayed; resolving by 11 AM">
+              <input type="text" id="mgrRemarks" placeholder="Enter review remarks (e.g. Courier delay; resolving by 11 AM)">
             </div>
 
             <button type="submit" id="btnSubmitManagerReview" class="btn btn-allo-green" style="width:100%; justify-content:center; padding:10px;">
-              Submit Manager Review
+              Submit Manager Review Decision
             </button>
           </form>
         </div>
@@ -413,6 +413,88 @@
 
       <div class="test-cards-grid" id="testResultsList">
         <!-- Populated dynamically -->
+      </div>
+    </section>
+
+    <!-- Operational Reviews Section (Matches Image 3: Loved By Influencers / Team Reviews) -->
+    <section class="reviews-section" id="reviewsSection">
+      <div class="reviews-header">
+        <h3 class="reviews-title">Loved 💕 By Allo Operations Team</h3>
+        <p class="reviews-subtitle">Real feedback from Founder's Office, Operations Management, and Warehouse Dispatch Leads.</p>
+      </div>
+
+      <div class="reviews-cards-grid">
+        <!-- Review 1: Founder's Office -->
+        <div class="review-card" data-filter="All" title="Click to view all operational tasks">
+          <div class="review-top">
+            <div class="review-stars">★★★★★</div>
+            <span class="review-badge">Verified Review</span>
+          </div>
+          <p class="review-text">
+            "The 18:00 cutoff sentinel gives us total visibility. Level 2 leadership escalation ensures no warehouse dispatch gets neglected past 24 hours."
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">FO</div>
+            <div>
+              <strong>Aarav Sharma</strong>
+              <small>Founder's Office &amp; Operations</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 2: Operations Manager -->
+        <div class="review-card" data-filter="Employee C" title="Click to inspect Employee C tasks">
+          <div class="review-top">
+            <div class="review-stars">★★★★★</div>
+            <span class="review-badge">Verified Review</span>
+          </div>
+          <p class="review-text">
+            "The 24h waiver desk is a lifesaver. When logistics face vendor delays, we grant an operational waiver and pause escalation without breaking tracking."
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">OM</div>
+            <div>
+              <strong>Pooja Mehta</strong>
+              <small>Operations Manager</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 3: Dispatch Lead -->
+        <div class="review-card" data-filter="Employee A" title="Click to inspect Employee A tasks">
+          <div class="review-top">
+            <div class="review-stars">★★★★★</div>
+            <span class="review-badge">Verified Review</span>
+          </div>
+          <p class="review-text">
+            "Submitting our daily WhatsApp dispatch digest in one place takes under 10 seconds. The next day cycle auto-rolls without manual spreadsheet entry."
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">EA</div>
+            <div>
+              <strong>Rohan Gupta</strong>
+              <small>Employee A • Borosilicate Dispatch Lead</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 4: Inventory Lead -->
+        <div class="review-card" data-filter="Employee B" title="Click to inspect Employee B tasks">
+          <div class="review-top">
+            <div class="review-stars">★★★★★</div>
+            <span class="review-badge">Verified Review</span>
+          </div>
+          <p class="review-text">
+            "Entering the Ticket ID auto-closes the cycle and sets the next 7, 15, or 30-day due date automatically. Zero duplicate work."
+          </p>
+          <div class="review-author">
+            <div class="review-avatar">EB</div>
+            <div>
+              <strong>Sneha Patil</strong>
+              <small>Employee B • Triply Cookware Lead</small>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 

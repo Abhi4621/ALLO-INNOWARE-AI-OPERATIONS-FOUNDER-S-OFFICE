@@ -1143,6 +1143,34 @@
         }
       });
     });
+
+    // 14. Review Cards Click (Interactive - jumps to that employee's tasks in console)
+    document.querySelectorAll('.review-card').forEach(card => {
+      card.addEventListener('click', function () {
+        const filterVal = this.getAttribute('data-filter') || 'All';
+
+        document.querySelectorAll('.nav-tab-btn').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        const empTab = document.querySelector('.nav-tab-btn[data-tab="tabEmployeeReport"]');
+        const empPane = document.getElementById('tabEmployeeReport');
+        if (empTab) empTab.classList.add('active');
+        if (empPane) empPane.classList.add('active');
+
+        state.selectedEmployeeFilter = filterVal;
+        const pills = document.querySelectorAll('#employeeFilterPills .allo-pill-btn');
+        pills.forEach(p => {
+          if (p.getAttribute('data-filter') === filterVal) p.classList.add('active');
+          else p.classList.remove('active');
+        });
+
+        renderEmployeeConsole();
+
+        const tableCard = document.querySelector('.allo-card');
+        if (tableCard) tableCard.scrollIntoView({ behavior: 'smooth' });
+
+        showToast(`Filtered console tasks for: ${filterVal}`);
+      });
+    });
   }
 
   // --- App Initialization ---
