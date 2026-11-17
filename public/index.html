@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Allo Innoware - Task Operations Engine</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Header Bar -->
+  <header class="top-header">
+    <div class="brand">
+      <span>Allo Innoware</span>
+      <span class="brand-badge">Ops Engine v2.4</span>
+    </div>
+    <div class="header-actions">
+      <button id="btnCheckOverdue" class="btn" title="Check deadlines and send alerts">Check Overdue Tasks</button>
+      <button id="btnResetData" class="btn" title="Reset sample test tasks">Reset Sample Data</button>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="nav-bar">
+    <button class="nav-tab active" data-tab="tabEmployeeReport">Employee Report</button>
+    <button class="nav-tab" data-tab="tabTaskMaster">Task Master</button>
+    <button class="nav-tab" data-tab="tabCompletionLog">Completion Log</button>
+    <button class="nav-tab" data-tab="tabManagerDashboard">Manager Dashboard</button>
+    <button class="nav-tab" data-tab="tabNotificationLog">Notification Log</button>
+    <button class="nav-tab" data-tab="tabSettings">Settings & SLA</button>
+    <button class="nav-tab" data-tab="tabTests">Run 8 Tests</button>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="container">
+
+    <!-- 1. Employee Report Tab (Primary Employee Interface) -->
+    <section id="tabEmployeeReport" class="tab-pane active">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Employee Operating Report</h2>
+          <p class="section-subtitle">Single-point view: View pending tasks, enter Ticket ID or WhatsApp update, and click Complete.</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <label for="employeeFilter" style="margin-bottom:0;">Filter Employee:</label>
+          <select id="employeeFilter">
+            <option value="All">All Employees</option>
+            <option value="Employee A">Employee A</option>
+            <option value="Employee B">Employee B</option>
+            <option value="Employee C">Employee C</option>
+            <option value="Employee D">Employee D</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="employeeReportTable">
+          <thead>
+            <tr>
+              <th>Task ID</th>
+              <th>Cycle ID</th>
+              <th>Task Name</th>
+              <th>Assigned To</th>
+              <th>Due Date</th>
+              <th>Status</th>
+              <th>Proof Required</th>
+              <th>Ticket ID / Proof Input</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="employeeReportBody">
+            <!-- Populated dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 2. Task Master Tab -->
+    <section id="tabTaskMaster" class="tab-pane">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Task Master Configuration</h2>
+          <p class="section-subtitle">Master state of recurring operational tasks and active cycle trackers.</p>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="taskMasterTable">
+          <thead>
+            <tr>
+              <th>Task ID</th>
+              <th>Task Name</th>
+              <th>Assigned To</th>
+              <th>Frequency</th>
+              <th>Start Date</th>
+              <th>Due Date</th>
+              <th>Required Proof</th>
+              <th>Status</th>
+              <th>Cycle #</th>
+              <th>Cycle ID</th>
+              <th>Alert Sent</th>
+              <th>Manager Ack</th>
+            </tr>
+          </thead>
+          <tbody id="taskMasterBody">
+            <!-- Populated dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3. Completion Log Tab -->
+    <section id="tabCompletionLog" class="tab-pane">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Completion Log (Audit Trail)</h2>
+          <p class="section-subtitle">Immutable historical ledger of all completed cycles.</p>
+        </div>
+        <button id="btnExportCsv" class="btn btn-sm">Export CSV</button>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="completionLogTable">
+          <thead>
+            <tr>
+              <th>Completion ID</th>
+              <th>Cycle ID</th>
+              <th>Task ID</th>
+              <th>Task Name</th>
+              <th>Completed By</th>
+              <th>Cycle #</th>
+              <th>Due Date</th>
+              <th>Completed At</th>
+              <th>Proof Submitted</th>
+              <th>Turnaround Status</th>
+            </tr>
+          </thead>
+          <tbody id="completionLogBody">
+            <!-- Populated dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 4. Manager Dashboard Tab -->
+    <section id="tabManagerDashboard" class="tab-pane">
+      <div class="grid-2">
+        <!-- Summary Stats Table -->
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Operational Summary</h2>
+              <p class="section-subtitle">Live team status counters.</p>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Metric</th>
+                  <th>Count</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Total Active Tasks</td>
+                  <td id="statTotalActive" style="font-weight:600;">0</td>
+                </tr>
+                <tr>
+                  <td>Pending Today</td>
+                  <td id="statPendingToday" style="font-weight:600;">0</td>
+                </tr>
+                <tr>
+                  <td>Overdue Tasks</td>
+                  <td id="statOverdue" style="font-weight:600; color:#991b1b;">0</td>
+                </tr>
+                <tr>
+                  <td>Escalated to Leadership</td>
+                  <td id="statEscalated" style="font-weight:600; color:#be123c;">0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Manager Action Desk -->
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Manager Review & Action Desk</h2>
+              <p class="section-subtitle">Acknowledge overdue items, grant 24h waivers, or resolve.</p>
+            </div>
+          </div>
+
+          <form id="managerActionForm">
+            <div class="form-group">
+              <label for="mgrSelectTask">Select Task ID:</label>
+              <select id="mgrSelectTask">
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="mgrActionType">Action:</label>
+              <select id="mgrActionType">
+                <option value="Acknowledge & Follow Up">Acknowledge & Follow Up</option>
+                <option value="Waived / 24h Extension">Waived / 24h Extension</option>
+                <option value="Mark Resolved Manually">Mark Resolved Manually</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="mgrRemarks">Manager Remarks / Plan:</label>
+              <input type="text" id="mgrRemarks" placeholder="e.g. Portal was down, resolving by 10 AM">
+            </div>
+
+            <button type="submit" id="btnSubmitManagerReview" class="btn btn-primary" style="margin-top:8px;">Submit Review</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Notification Log Tab -->
+    <section id="tabNotificationLog" class="tab-pane">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Notification Log</h2>
+          <p class="section-subtitle">Audit record of alerts, reminders, and escalations. Prevents duplicates.</p>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="notificationLogTable">
+          <thead>
+            <tr>
+              <th>Notification ID</th>
+              <th>Timestamp</th>
+              <th>Cycle ID</th>
+              <th>Task Name</th>
+              <th>Recipient</th>
+              <th>Role</th>
+              <th>Alert Type</th>
+              <th>Reason</th>
+              <th>Delivery Status</th>
+            </tr>
+          </thead>
+          <tbody id="notificationLogBody">
+            <!-- Populated dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6. Settings & SLA Tab -->
+    <section id="tabSettings" class="tab-pane">
+      <div class="card" style="max-width: 600px;">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Operational Settings & SLA Rules</h2>
+            <p class="section-subtitle">Configurable parameters for deadlines and escalations.</p>
+          </div>
+        </div>
+
+        <form id="settingsForm">
+          <div class="form-group">
+            <label for="settingCutoffHour">Daily Task Cutoff Hour (24h format):</label>
+            <input type="number" id="settingCutoffHour" min="0" max="23" value="18">
+          </div>
+
+          <div class="form-group">
+            <label for="settingAlertDelayMins">Manager Alert Buffer (minutes post cutoff):</label>
+            <input type="number" id="settingAlertDelayMins" min="0" max="120" value="30">
+          </div>
+
+          <div class="form-group">
+            <label for="settingEscalationHours">Leadership Escalation SLA (hours post alert):</label>
+            <input type="number" id="settingEscalationHours" min="1" max="72" value="24">
+          </div>
+
+          <div class="form-group">
+            <label for="settingManagerEmail">Operations Manager Email:</label>
+            <input type="text" id="settingManagerEmail" value="hr.ops.allo@gmail.com">
+          </div>
+
+          <div class="form-group">
+            <label for="settingLeadershipEmail">Leadership / Founder's Office Email:</label>
+            <input type="text" id="settingLeadershipEmail" value="hr.ops.allo@gmail.com">
+          </div>
+
+          <div class="form-group">
+            <label for="settingSimulationMode">Mode:</label>
+            <select id="settingSimulationMode">
+              <option value="true">Simulation Mode (Log alerts without sending live emails)</option>
+              <option value="false">Live Delivery Mode</option>
+            </select>
+          </div>
+
+          <button type="submit" id="btnSaveSettings" class="btn btn-primary" style="margin-top:8px;">Save Settings</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- 7. Run 8 Tests Tab -->
+    <section id="tabTests" class="tab-pane">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Assignment Automated Test Suite</h2>
+          <p class="section-subtitle">Executes and verifies all 8 test requirements from the Allo Innoware test brief.</p>
+        </div>
+        <button id="btnRunAllTests" class="btn btn-primary">Execute All 8 Tests</button>
+      </div>
+
+      <div id="testResultsList">
+        <!-- Test results populated dynamically -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast notification -->
+  <div id="toast">Action completed successfully</div>
+
+  <script src="app.js"></script>
+</body>
+</html>

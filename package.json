@@ -1,0 +1,20 @@
+{
+  "name": "allo-innoware-task-automation",
+  "version": "1.0.0",
+  "description": "Allo Innoware Recurring Task Tracking, Pending Reports & Escalation Automation Prototype",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node test-server.js",
+    "build": "echo 'Ready for Vercel deployment'"
+  },
+  "keywords": [
+    "task-automation",
+    "operations",
+    "google-sheets",
+    "escalation-sla"
+  ],
+  "author": "4th Year B.Tech CSE (AI & ML) Student",
+  "license": "MIT"
+}
