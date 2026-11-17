@@ -1,46 +1,44 @@
-/* Allo Innoware - Enterprise Cloud Operations Theme (AWS-inspired) */
-/* Professional, Dark Navy & AWS-Orange Engineering Aesthetic */
+/* ==========================================================================
+   ALLO INNOWARE - Official Brand Design System
+   Matches https://alloinnoware.com/ design, typography, and palette.
+   ========================================================================== */
 
 :root {
-  --bg-base: #0b0f19;
-  --bg-surface: #111827;
-  --bg-surface-elevated: #161f30;
-  --bg-surface-hover: #1e293b;
-  --border: #1f2937;
-  --border-light: #334155;
-  --border-focus: #ff9900;
+  /* Allo Innoware Brand Colors */
+  --allo-green: #7cb342;
+  --allo-green-hover: #689f38;
+  --allo-green-dark: #558b2f;
+  --allo-green-light: #f1f8e9;
+  --allo-green-border: #dcedc8;
 
-  --text-primary: #f9fafb;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
+  --allo-cream: #fdfbf7;
+  --allo-cream-dark: #f7f4ea;
+  --allo-surface: #ffffff;
+  --allo-border: #e6e9e0;
+  --allo-border-light: #f0f2eb;
 
-  --aws-orange: #ec7211;
-  --aws-orange-hover: #dd6b10;
-  --aws-orange-glow: rgba(236, 114, 17, 0.2);
-  --aws-blue: #00a4e4;
-  --aws-blue-hover: #38bdf8;
+  --allo-text: #263238;
+  --allo-text-muted: #607d8b;
+  --allo-text-sub: #455a64;
 
-  --status-pending-bg: #1e293b;
-  --status-pending-text: #94a3b8;
-  --status-pending-border: #334155;
+  --allo-red: #e53935;
+  --allo-red-light: #ffebee;
+  --allo-amber: #f57c00;
+  --allo-amber-light: #fff3e0;
+  --allo-blue: #0288d1;
+  --allo-blue-light: #e1f5fe;
 
-  --status-overdue-bg: rgba(239, 68, 68, 0.15);
-  --status-overdue-text: #f87171;
-  --status-overdue-border: rgba(239, 68, 68, 0.35);
-
-  --status-escalated-bg: rgba(225, 29, 72, 0.2);
-  --status-escalated-text: #fb7185;
-  --status-escalated-border: rgba(225, 29, 72, 0.4);
-
-  --status-completed-bg: rgba(16, 185, 129, 0.15);
-  --status-completed-text: #34d399;
-  --status-completed-border: rgba(16, 185, 129, 0.35);
-
-  --radius: 6px;
   --radius-sm: 4px;
-  --radius-full: 9999px;
-  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
 }
 
 * {
@@ -50,144 +48,185 @@
 }
 
 body {
-  font-family: var(--font-family);
-  background-color: var(--bg-base);
-  color: var(--text-primary);
+  font-family: var(--font-main);
+  background-color: var(--allo-cream);
+  color: var(--allo-text);
   line-height: 1.5;
   font-size: 13px;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Header Navbar */
-.top-header {
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 24px;
+/* Top Announcement Strip (Matches Allo Website Top Bar) */
+.top-announcement-bar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--allo-border-light);
+  font-size: 11px;
+  color: var(--allo-text-muted);
+  padding: 6px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-announcement-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.top-contact-link {
+  color: var(--allo-text-sub);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.top-announcement-center {
+  font-weight: 600;
+  color: var(--allo-text);
+  letter-spacing: 0.02em;
+}
+
+.top-live-cutoff {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--allo-green-light);
+  border: 1px solid var(--allo-green-border);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  color: var(--allo-green-dark);
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--allo-green);
+  border-radius: 50%;
+  box-shadow: 0 0 4px var(--allo-green);
+}
+
+/* Main Brand Header */
+.main-header {
+  background: #ffffff;
+  border-bottom: 1px solid var(--allo-border);
+  padding: 14px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 50;
+  box-shadow: var(--shadow-sm);
 }
 
-.brand-section {
+/* Allo Logo (Exact Styling from alloinnoware.com) */
+.brand-logo-container {
   display: flex;
   align-items: center;
   gap: 12px;
+  text-decoration: none;
 }
 
-.logo-badge {
-  font-family: var(--font-mono);
-  font-size: 12px;
+.allo-logo-text {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--allo-green);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  display: flex;
+  align-items: baseline;
+}
+
+.allo-sprout {
+  color: var(--allo-green);
+  font-size: 16px;
+  margin-left: 1px;
+}
+
+.allo-subtext {
+  font-size: 8px;
   font-weight: 700;
-  background: var(--bg-surface-elevated);
-  border: 1px solid var(--aws-orange);
-  color: var(--aws-orange);
-  padding: 4px 8px;
+  color: var(--allo-text-muted);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+.brand-portal-tag {
+  background: var(--allo-cream-dark);
+  border: 1px solid var(--allo-border);
+  color: var(--allo-text-sub);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
   border-radius: var(--radius-sm);
+  text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.brand-titles h1 {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
-}
-
-.brand-titles p {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.header-center {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.countdown-box {
-  background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-light);
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  color: var(--text-secondary);
-}
-
-.pulse-dot {
-  width: 7px;
-  height: 7px;
-  background-color: #10b981;
-  border-radius: 50%;
-  box-shadow: 0 0 6px rgba(16, 185, 129, 0.8);
-}
-
-.header-actions {
+.header-action-group {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* Nav Bar */
-.nav-bar {
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border);
+/* Navigation Tabs (Allo Product Category Navigation Style) */
+.category-nav-bar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--allo-border);
   padding: 0 24px;
   display: flex;
-  gap: 6px;
+  gap: 4px;
   overflow-x: auto;
 }
 
-.nav-tab {
-  padding: 10px 14px;
+.nav-tab-btn {
+  padding: 12px 14px;
   font-size: 12px;
-  font-weight: 500;
-  color: var(--text-muted);
+  font-weight: 600;
+  color: var(--allo-text-sub);
   background: transparent;
   border: none;
-  border-bottom: 2px solid transparent;
+  border-bottom: 3px solid transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.12s ease;
+  transition: all 0.15s ease;
   white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-.nav-tab:hover {
-  color: var(--text-primary);
-  background: var(--bg-surface-hover);
+.nav-tab-btn:hover {
+  color: var(--allo-green-dark);
+  background: var(--allo-cream);
 }
 
-.nav-tab.active {
-  color: #ffffff;
-  border-bottom-color: var(--aws-orange);
-  font-weight: 600;
+.nav-tab-btn.active {
+  color: var(--allo-green-dark);
+  border-bottom-color: var(--allo-green);
+  background: #ffffff;
 }
 
-.tab-badge {
+.nav-tab-badge {
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   padding: 1px 6px;
-  border-radius: var(--radius-full);
-  background: var(--bg-surface-elevated);
-  color: var(--text-muted);
-  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--allo-cream-dark);
+  color: var(--allo-text-muted);
 }
 
-.nav-tab.active .tab-badge {
-  background: rgba(236, 114, 17, 0.15);
-  color: var(--aws-orange);
-  border-color: rgba(236, 114, 17, 0.4);
+.nav-tab-btn.active .nav-tab-badge {
+  background: var(--allo-green-light);
+  color: var(--allo-green-dark);
+  border: 1px solid var(--allo-green-border);
 }
 
-/* Container */
-.container {
+/* Main Container */
+.page-container {
   max-width: 1320px;
   margin: 0 auto;
   padding: 24px;
@@ -195,10 +234,96 @@ body {
 
 .tab-pane {
   display: none;
+  animation: fadeIn 0.2s ease-in-out;
 }
 
 .tab-pane.active {
   display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Operations Overview Cards (Allo Category Circular Style + Stats) */
+.ops-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.ops-kpi-card {
+  background: #ffffff;
+  border: 1px solid var(--allo-border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ops-kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--allo-green-border);
+}
+
+.kpi-circle-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--allo-green);
+  background: var(--allo-green-light);
+  color: var(--allo-green-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.kpi-circle-overdue {
+  border-color: var(--allo-red);
+  background: var(--allo-red-light);
+  color: var(--allo-red);
+}
+
+.kpi-circle-escalated {
+  border-color: #880e4f;
+  background: #fce4ec;
+  color: #880e4f;
+}
+
+.kpi-circle-active {
+  border-color: var(--allo-blue);
+  background: var(--allo-blue-light);
+  color: var(--allo-blue);
+}
+
+.kpi-body p {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--allo-text-muted);
+}
+
+.kpi-body h3 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--allo-text);
+  line-height: 1.1;
+  margin: 2px 0;
+}
+
+.kpi-subtext {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--allo-green-dark);
 }
 
 /* Section Header */
@@ -211,101 +336,32 @@ body {
   gap: 12px;
 }
 
-.section-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: #ffffff;
+.section-heading-group h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--allo-text);
+  letter-spacing: -0.01em;
 }
 
-.section-subtitle {
+.section-heading-group p {
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--allo-text-muted);
   margin-top: 2px;
 }
 
-/* KPI Cards (AWS Console Style) */
-.kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.kpi-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
+/* Card & Table Containers */
+.allo-card {
+  background: #ffffff;
+  border: 1px solid var(--allo-border);
   border-radius: var(--radius);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  transition: border-color 0.15s ease;
-}
-
-.kpi-card:hover {
-  border-color: var(--border-light);
-}
-
-.kpi-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.kpi-title {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
-}
-
-.kpi-val {
-  font-size: 26px;
-  font-weight: 700;
-  color: #ffffff;
-  font-family: var(--font-family);
-  line-height: 1.1;
-}
-
-.kpi-footer {
-  margin-top: 10px;
-  font-size: 11px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.kpi-card.kpi-orange {
-  border-top: 3px solid var(--aws-orange);
-}
-
-.kpi-card.kpi-blue {
-  border-top: 3px solid var(--aws-blue);
-}
-
-.kpi-card.kpi-red {
-  border-top: 3px solid #ef4444;
-}
-
-.kpi-card.kpi-green {
-  border-top: 3px solid #10b981;
-}
-
-/* Data Table Container */
-.table-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
 }
 
-.table-toolbar {
-  padding: 12px 16px;
-  background: var(--bg-surface-elevated);
-  border-bottom: 1px solid var(--border);
+.allo-card-header {
+  padding: 14px 18px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--allo-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -313,52 +369,55 @@ body {
   gap: 12px;
 }
 
-.search-input-box {
+/* Search Bar */
+.allo-search-wrap {
   display: flex;
   align-items: center;
-  background: var(--bg-base);
-  border: 1px solid var(--border-light);
+  background: var(--allo-cream);
+  border: 1px solid var(--allo-border);
   border-radius: var(--radius-sm);
-  padding: 4px 10px;
+  padding: 6px 12px;
   width: 280px;
 }
 
-.search-input-box input {
+.allo-search-wrap input {
   border: none;
   background: transparent;
   outline: none;
   font-size: 12px;
-  color: var(--text-primary);
+  color: var(--allo-text);
   width: 100%;
 }
 
-.filter-pills {
+/* Filter Pills */
+.filter-pills-row {
   display: flex;
   gap: 6px;
+  flex-wrap: wrap;
 }
 
-.filter-btn {
-  padding: 4px 10px;
+.allo-pill-btn {
+  padding: 5px 12px;
   font-size: 11px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-light);
-  background: var(--bg-base);
-  color: var(--text-secondary);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--allo-border);
+  background: #ffffff;
+  color: var(--allo-text-sub);
   cursor: pointer;
-  font-weight: 500;
-  transition: all 0.12s ease;
-}
-
-.filter-btn:hover {
-  background: var(--bg-surface-hover);
-  color: #ffffff;
-}
-
-.filter-btn.active {
-  background: var(--aws-orange);
-  color: #ffffff;
-  border-color: var(--aws-orange);
   font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.allo-pill-btn:hover {
+  background: var(--allo-green-light);
+  border-color: var(--allo-green-border);
+  color: var(--allo-green-dark);
+}
+
+.allo-pill-btn.active {
+  background: var(--allo-green);
+  color: #ffffff;
+  border-color: var(--allo-green);
 }
 
 /* Tables */
@@ -374,11 +433,11 @@ table {
 }
 
 th {
-  background-color: var(--bg-surface-elevated);
-  color: var(--text-muted);
-  font-weight: 600;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--border);
+  background-color: #fafcf8;
+  color: var(--allo-text-sub);
+  font-weight: 700;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--allo-border);
   white-space: nowrap;
   font-size: 11px;
   text-transform: uppercase;
@@ -387,8 +446,8 @@ th {
 
 td {
   padding: 12px 14px;
-  border-bottom: 1px solid var(--border);
-  color: var(--text-secondary);
+  border-bottom: 1px solid var(--allo-border-light);
+  color: var(--allo-text);
   vertical-align: middle;
 }
 
@@ -397,115 +456,126 @@ tr:last-child td {
 }
 
 tbody tr:hover {
-  background-color: var(--bg-surface-hover);
-}
-
-tbody tr:hover td {
-  color: #ffffff;
+  background-color: #fdfefc;
 }
 
 /* Badges */
 .badge {
   display: inline-flex;
   align-items: center;
+  gap: 4px;
   padding: 2px 8px;
   border-radius: var(--radius-sm);
   font-size: 11px;
-  font-weight: 600;
-  border: 1px solid transparent;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .badge-pending {
-  background: var(--status-pending-bg);
-  color: var(--status-pending-text);
-  border-color: var(--status-pending-border);
+  background: var(--allo-cream-dark);
+  color: var(--allo-text-sub);
+  border: 1px solid var(--allo-border);
 }
 
 .badge-overdue {
-  background: var(--status-overdue-bg);
-  color: var(--status-overdue-text);
-  border-color: var(--status-overdue-border);
+  background: var(--allo-red-light);
+  color: var(--allo-red);
+  border: 1px solid #ffcdd2;
 }
 
 .badge-escalated {
-  background: var(--status-escalated-bg);
-  color: var(--status-escalated-text);
-  border-color: var(--status-escalated-border);
+  background: #fce4ec;
+  color: #c2185b;
+  border: 1px solid #f8bbd0;
+  font-weight: 800;
 }
 
 .badge-completed {
-  background: var(--status-completed-bg);
-  color: var(--status-completed-text);
-  border-color: var(--status-completed-border);
+  background: var(--allo-green-light);
+  color: var(--allo-green-dark);
+  border: 1px solid var(--allo-green-border);
+}
+
+.badge-freq {
+  background: #f3e5f5;
+  color: #7b1fa2;
+  font-weight: 600;
+  border: 1px solid #e1bee7;
 }
 
 .badge-code {
   font-family: var(--font-mono);
   font-size: 11px;
-  background: #0b0f19;
-  border: 1px solid var(--border);
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
   padding: 2px 6px;
   border-radius: 3px;
-  color: var(--aws-blue);
+  color: #37474f;
+  font-weight: 600;
 }
 
-/* Buttons */
+/* Buttons (Matching Allo Innoware Brand CTA) */
 .btn {
   font-family: inherit;
   font-size: 12px;
-  font-weight: 500;
-  padding: 6px 14px;
+  font-weight: 600;
+  padding: 7px 16px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border-light);
-  background: var(--bg-surface-elevated);
-  color: var(--text-primary);
+  border: 1px solid var(--allo-border);
+  background: #ffffff;
+  color: var(--allo-text);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.12s ease;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow-sm);
 }
 
 .btn:hover {
-  background: var(--bg-surface-hover);
-  border-color: #64748b;
-  color: #ffffff;
+  background: var(--allo-cream);
+  border-color: #cfd8dc;
 }
 
-.btn-primary {
-  background: var(--aws-orange);
+/* Allo Green CTA Button (Matches "SHOP NOW" & "ADD TO CART" buttons) */
+.btn-allo-green {
+  background: var(--allo-green);
   color: #ffffff;
-  border-color: var(--aws-orange);
-  font-weight: 600;
+  border-color: var(--allo-green);
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
-.btn-primary:hover {
-  background: var(--aws-orange-hover);
-  border-color: var(--aws-orange-hover);
+.btn-allo-green:hover {
+  background: var(--allo-green-hover);
+  border-color: var(--allo-green-hover);
+  color: #ffffff;
 }
 
 .btn-sm {
-  padding: 4px 10px;
+  padding: 5px 10px;
   font-size: 11px;
 }
 
 .btn-danger {
-  background: rgba(239, 68, 68, 0.15);
-  color: #f87171;
-  border-color: rgba(239, 68, 68, 0.35);
+  background: var(--allo-red-light);
+  color: var(--allo-red);
+  border-color: #ffcdd2;
 }
 
 .btn-danger:hover {
-  background: #ef4444;
+  background: var(--allo-red);
   color: #ffffff;
 }
 
-/* Forms & Inputs */
+/* Form Controls */
 .form-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
+  background: #ffffff;
+  border: 1px solid var(--allo-border);
   border-radius: var(--radius);
   padding: 20px;
+  box-shadow: var(--shadow-sm);
 }
 
 .form-group {
@@ -515,11 +585,11 @@ tbody tr:hover td {
 label {
   display: block;
   font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-weight: 700;
+  color: var(--allo-text-sub);
   margin-bottom: 5px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
 }
 
 input[type="text"],
@@ -530,33 +600,32 @@ textarea {
   font-family: inherit;
   font-size: 12px;
   padding: 8px 10px;
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--allo-border);
   border-radius: var(--radius-sm);
-  background: var(--bg-base);
-  color: var(--text-primary);
+  background: #ffffff;
+  color: var(--allo-text);
   outline: none;
-  transition: border-color 0.12s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-  border-color: var(--aws-orange);
-  box-shadow: 0 0 0 2px var(--aws-orange-glow);
+  border-color: var(--allo-green);
+  box-shadow: 0 0 0 3px rgba(124, 179, 66, 0.2);
 }
 
-.input-table {
+.table-input-field {
   width: 100%;
-  min-width: 200px;
-  padding: 6px 8px;
+  min-width: 220px;
+  padding: 6px 10px;
   font-size: 12px;
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--allo-border);
   border-radius: var(--radius-sm);
-  background: var(--bg-base);
-  color: #ffffff;
+  background: #ffffff;
 }
 
-/* Grid Layout */
+/* Two-Column Grid */
 .grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -569,144 +638,170 @@ textarea:focus {
   }
 }
 
-/* Test Runner Component */
-.test-summary-box {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
+/* Test Suite Runner */
+.test-suite-header-card {
+  background: #ffffff;
+  border: 1px solid var(--allo-border);
   border-radius: var(--radius);
-  padding: 18px;
-  margin-bottom: 16px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-sm);
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 14px;
 }
 
-.progress-bar-wrap {
+.test-progress-track {
   width: 100%;
-  height: 5px;
-  background: var(--bg-surface-elevated);
-  border-radius: var(--radius-full);
+  height: 6px;
+  background: var(--allo-cream-dark);
+  border-radius: var(--radius-pill);
   overflow: hidden;
   margin-top: 10px;
 }
 
-.progress-bar-fill {
+.test-progress-fill {
   height: 100%;
-  background: var(--aws-orange);
+  background: var(--allo-green);
   width: 0%;
   transition: width 0.3s ease;
 }
 
-.test-grid {
+.test-cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 12px;
+  gap: 14px;
 }
 
-.test-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
+.test-case-card {
+  background: #ffffff;
+  border: 1px solid var(--allo-border);
   border-radius: var(--radius);
-  padding: 14px;
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.15s ease;
 }
 
-.test-card.passed {
-  border-left: 3px solid #10b981;
+.test-case-card.passed {
+  border-left: 4px solid var(--allo-green);
 }
 
-.test-card.failed {
-  border-left: 3px solid #ef4444;
+.test-case-card.failed {
+  border-left: 4px solid var(--allo-red);
 }
 
-.test-header {
+.test-case-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 13px;
+  color: var(--allo-text);
   margin-bottom: 6px;
-  color: #ffffff;
 }
 
-.test-details {
+.test-case-desc {
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--allo-text-muted);
   line-height: 1.4;
 }
 
+/* Floating WhatsApp Quick Action Button (Matches alloinnoware.com bottom right button) */
+.floating-whatsapp-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #25d366;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
+  cursor: pointer;
+  border: none;
+  z-index: 100;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.floating-whatsapp-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.5);
+}
+
 /* Email Modal */
-.modal-overlay {
+.modal-backdrop {
   display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(38, 50, 56, 0.5);
   backdrop-filter: blur(2px);
-  z-index: 100;
+  z-index: 200;
   align-items: center;
   justify-content: center;
   padding: 20px;
 }
 
-.modal-overlay.open {
+.modal-backdrop.open {
   display: flex;
 }
 
-.modal-content {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius);
+.modal-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
   max-width: 650px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-md);
 }
 
 .modal-header {
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--border);
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--allo-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--bg-surface-elevated);
+  background: #fafcf8;
 }
 
 .modal-body {
   padding: 20px;
-  color: var(--text-secondary);
 }
 
 .modal-footer {
-  padding: 12px 20px;
-  border-top: 1px solid var(--border);
+  padding: 14px 20px;
+  border-top: 1px solid var(--allo-border);
   display: flex;
   justify-content: flex-end;
-  background: var(--bg-surface-elevated);
+  background: #fafcf8;
 }
 
-/* Toast */
+/* Toast Notification */
 #toast {
   position: fixed;
   bottom: 24px;
-  right: 24px;
-  background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-light);
+  left: 24px;
+  background: var(--allo-text);
   color: #ffffff;
-  padding: 10px 16px;
+  padding: 10px 18px;
   border-radius: var(--radius);
-  font-size: 12px;
-  font-weight: 500;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: var(--shadow-md);
   opacity: 0;
   transform: translateY(8px);
   pointer-events: none;
-  transition: all 0.18s ease;
-  z-index: 150;
+  transition: all 0.2s ease;
+  z-index: 250;
   display: flex;
   align-items: center;
   gap: 8px;

@@ -714,35 +714,37 @@
     let emailHtml = '';
     if (isEscalation) {
       emailHtml = `
-        <div style="font-family:sans-serif; background:#111827; border:1px solid rgba(239,68,68,0.4); border-radius:6px; overflow:hidden;">
-          <div style="background:#be123c; color:#fff; padding:12px 16px;">
-            <h4 style="margin:0; font-size:14px;">Allo Innoware: Leadership Escalation</h4>
-            <small style="color:#ffe4e6;">SLA Breach: Unresolved >24 hours past cutoff</small>
+        <div style="font-family:sans-serif; background:#ffffff; border:1px solid #fecdd3; border-radius:8px; overflow:hidden;">
+          <div style="background:#e11d48; color:#fff; padding:14px 18px;">
+            <div style="font-size:18px; font-weight:800; letter-spacing:-0.03em;">allo🌿 <span style="font-size:10px; font-weight:700; letter-spacing:0.2em;">INNOWARE</span></div>
+            <h4 style="margin:4px 0 0 0; font-size:14px;">Leadership SLA Escalation Protocol</h4>
+            <small style="color:#ffe4e6;">Critical SLA Breach: Unresolved >24 hours past manager alert</small>
           </div>
-          <div style="padding:16px; font-size:12px; color:#cbd5e1;">
-            <p><strong style="color:#fff;">To:</strong> ${notification.recipient} (Founder's Office)</p>
-            <p><strong style="color:#fff;">Task:</strong> ${notification.taskName} (Cycle: <code>${notification.cycleId}</code>)</p>
-            <p><strong style="color:#fff;">Reason:</strong> ${notification.reason}</p>
-            <p><strong style="color:#fff;">Logged Timestamp:</strong> ${notification.timestamp}</p>
-            <div style="margin-top:14px; padding:10px; background:rgba(239,68,68,0.1); border-left:4px solid #ef4444; font-size:11px; color:#fca5a5;">
-              Executive Action Required: Review with Operations Manager to remove operational blockers.
+          <div style="padding:18px; font-size:13px; color:#263238;">
+            <p><strong style="color:#0f172a;">To:</strong> ${notification.recipient} (Founder's Office & COO)</p>
+            <p><strong style="color:#0f172a;">Task:</strong> ${notification.taskName} (Cycle: <code>${notification.cycleId}</code>)</p>
+            <p><strong style="color:#0f172a;">Reason:</strong> ${notification.reason}</p>
+            <p><strong style="color:#0f172a;">Logged Timestamp:</strong> ${notification.timestamp}</p>
+            <div style="margin-top:14px; padding:12px; background:#fff1f2; border-left:4px solid #e11d48; font-size:12px; color:#9f1239;">
+              <strong>Executive Attention Required:</strong> Please review with Operations Manager to unblock warehouse dispatches and inventory sync.
             </div>
           </div>
         </div>
       `;
     } else {
       emailHtml = `
-        <div style="font-family:sans-serif; background:#111827; border:1px solid #334155; border-radius:6px; overflow:hidden;">
-          <div style="background:#1e293b; color:#fff; padding:12px 16px; border-bottom:1px solid #334155;">
-            <h4 style="margin:0; font-size:14px; color:#ec7211;">Allo Innoware Operations Sentinel</h4>
-            <small style="color:#94a3b8;">Notification Type: ${notification.alertType}</small>
+        <div style="font-family:sans-serif; background:#ffffff; border:1px solid #dcedc8; border-radius:8px; overflow:hidden;">
+          <div style="background:#7cb342; color:#fff; padding:14px 18px;">
+            <div style="font-size:18px; font-weight:800; letter-spacing:-0.03em;">allo🌿 <span style="font-size:10px; font-weight:700; letter-spacing:0.2em;">INNOWARE</span></div>
+            <h4 style="margin:4px 0 0 0; font-size:14px;">Daily Operations Sentinel Alert</h4>
+            <small style="color:#f1f8e9;">Notification: ${notification.alertType}</small>
           </div>
-          <div style="padding:16px; font-size:12px; color:#cbd5e1;">
-            <p><strong style="color:#fff;">To:</strong> ${notification.recipient}</p>
-            <p><strong style="color:#fff;">Subject Task:</strong> ${notification.taskName} (<code>${notification.cycleId}</code>)</p>
-            <p><strong style="color:#fff;">Event Detail:</strong> ${notification.reason}</p>
-            <p><strong style="color:#fff;">Timestamp:</strong> ${notification.timestamp}</p>
-            <p style="color:#64748b; font-size:11px; margin-top:12px;">Dispatched automatically by the Allo Innoware SLA Engine.</p>
+          <div style="padding:18px; font-size:13px; color:#263238;">
+            <p><strong style="color:#0f172a;">To:</strong> ${notification.recipient}</p>
+            <p><strong style="color:#0f172a;">Operational Task:</strong> ${notification.taskName} (<code>${notification.cycleId}</code>)</p>
+            <p><strong style="color:#0f172a;">Event Detail:</strong> ${notification.reason}</p>
+            <p><strong style="color:#0f172a;">Timestamp:</strong> ${notification.timestamp}</p>
+            <p style="color:#607d8b; font-size:11px; margin-top:14px;">Automated notification generated by Allo Innoware Operations Sentinel.</p>
           </div>
         </div>
       `;
@@ -981,10 +983,10 @@
 
   // --- Attach Event Listeners ---
   function setupEvents() {
-    // Tab Switching
-    document.querySelectorAll('.nav-tab').forEach(tab => {
+    // Tab Switching (supports both .nav-tab-btn and .nav-tab)
+    document.querySelectorAll('.nav-tab-btn, .nav-tab').forEach(tab => {
       tab.addEventListener('click', function () {
-        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-tab-btn, .nav-tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
 
         this.classList.add('active');
@@ -994,16 +996,51 @@
       });
     });
 
-    // Employee Filter Pills
-    const filterPills = document.getElementById('employeeFilterPills');
-    if (filterPills) {
-      filterPills.querySelectorAll('.filter-btn').forEach(btn => {
+    // Employee Filter Pills (supports both .allo-pill-btn and .filter-btn)
+    const filterContainer = document.getElementById('employeeFilterPills');
+    if (filterContainer) {
+      filterContainer.querySelectorAll('.allo-pill-btn, .filter-btn').forEach(btn => {
         btn.addEventListener('click', function () {
-          filterPills.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          filterContainer.querySelectorAll('.allo-pill-btn, .filter-btn').forEach(b => b.classList.remove('active'));
           this.classList.add('active');
           state.selectedEmployeeFilter = this.getAttribute('data-filter');
           renderEmployeeConsole();
         });
+      });
+    }
+
+    // Floating WhatsApp Quick Action Button
+    const btnWa = document.getElementById('btnFloatingWhatsApp');
+    if (btnWa) {
+      btnWa.addEventListener('click', function () {
+        // Switch to Employee Console tab
+        document.querySelectorAll('.nav-tab-btn, .nav-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+
+        const empTab = document.querySelector('[data-tab="tabEmployeeReport"]');
+        const empPane = document.getElementById('tabEmployeeReport');
+        if (empTab) empTab.classList.add('active');
+        if (empPane) empPane.classList.add('active');
+
+        // Set filter to Employee A
+        state.selectedEmployeeFilter = 'Employee A';
+        const pills = document.querySelectorAll('.allo-pill-btn, .filter-btn');
+        pills.forEach(p => {
+          if (p.getAttribute('data-filter') === 'Employee A') {
+            p.classList.add('active');
+          } else {
+            p.classList.remove('active');
+          }
+        });
+
+        renderEmployeeConsole();
+
+        const input = document.getElementById('input_proof_TSK-001');
+        if (input) {
+          input.value = 'WA-1730-Borosilicate-Dispatched-184Sets-0Exceptions';
+          input.focus();
+          showToast('💬 Pre-filled WhatsApp Daily Dispatch update. Click Complete to log!');
+        }
       });
     }
 

@@ -3,140 +3,142 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Allo Innoware - Operations Control Tower & Task Engine</title>
+  <title>Allo Innoware - Operations Management Portal</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <!-- Top Navigation Header -->
-  <header class="top-header">
-    <div class="brand-section">
-      <div class="logo-badge">ALLO</div>
-      <div class="brand-titles">
-        <h1>Allo Innoware</h1>
-        <p>AI Operations / Founder's Office Sentinel Engine</p>
+  <!-- Top Announcement Strip (Matches alloinnoware.com top header) -->
+  <div class="top-announcement-bar">
+    <div class="top-announcement-left">
+      <span>📞 Ops Support: +91 70281 80799</span>
+      <span>•</span>
+      <span>Warehouse: Borosilicate & Triply Dispatch Hub</span>
+    </div>
+    <div class="top-announcement-center">
+      Allo Innoware Operations Portal & Recurring Task SLA Engine
+    </div>
+    <div class="top-live-cutoff" title="Time remaining until 18:00 IST daily operations cutoff">
+      <span class="pulse-dot"></span>
+      <span>18:00 IST Cutoff:</span>
+      <strong id="cutoffCountdownText" style="font-family:var(--font-mono);">--:--:--</strong>
+    </div>
+  </div>
+
+  <!-- Main Brand Header (Matches Allo Logo & Header Layout) -->
+  <header class="main-header">
+    <div class="brand-logo-container">
+      <div>
+        <div class="allo-logo-text">
+          allo<span class="allo-sprout">🌿</span>
+        </div>
+        <div class="allo-subtext">INNOWARE</div>
       </div>
+      <span class="brand-portal-tag">Founder's Office / Ops Sentinel</span>
     </div>
 
-    <!-- Operational Cutoff Countdown -->
-    <div class="header-center">
-      <div class="countdown-box" title="Real-time countdown to daily 18:00 IST task cutoff">
-        <span class="pulse-dot"></span>
-        <span>Cutoff (18:00 IST):</span>
-        <strong id="cutoffCountdownText" style="font-family:var(--font-mono); color:#ffffff;">--:--:--</strong>
-      </div>
-    </div>
-
-    <!-- Actions -->
-    <div class="header-actions">
-      <button id="btnCheckOverdue" class="btn btn-primary" title="Evaluate deadlines, fire manager alerts, and check 24h SLA escalations">
-        Check Deadlines & SLAs
+    <!-- Quick Action Buttons -->
+    <div class="header-action-group">
+      <button id="btnCheckOverdue" class="btn btn-allo-green" title="Check cutoff deadlines, dispatch manager alerts, and evaluate 24h SLA escalations">
+        ⚡ Check Deadlines & SLAs
       </button>
       <button id="btnSimulateOverdue" class="btn" title="Simulate an overdue scenario for Employee C to test manager alert">
-        Inject Overdue Test
+        🧪 Test Overdue Alert
       </button>
-      <button id="btnResetData" class="btn btn-danger btn-sm" title="Reset all task cycles to initial default state">
-        Reset
+      <button id="btnResetData" class="btn btn-danger btn-sm" title="Reset sample test tasks to initial state">
+        ↺ Reset
       </button>
     </div>
   </header>
 
-  <!-- Navigation Tab Bar -->
-  <nav class="nav-bar">
-    <button class="nav-tab active" data-tab="tabEmployeeReport">
-      Employee Console
+  <!-- Category-Style Navigation Bar (Matches Allo Innoware Store Navigation) -->
+  <nav class="category-nav-bar">
+    <button class="nav-tab-btn active" data-tab="tabEmployeeReport">
+      Employee Portal
     </button>
-    <button class="nav-tab" data-tab="tabTaskMaster">
-      Task Master <span class="tab-badge" id="badgeTaskCount">4</span>
+    <button class="nav-tab-btn" data-tab="tabTaskMaster">
+      Task Master <span class="nav-tab-badge" id="badgeTaskCount">4</span>
     </button>
-    <button class="nav-tab" data-tab="tabCompletionLog">
-      Completion Log <span class="tab-badge" id="badgeLogCount">0</span>
+    <button class="nav-tab-btn" data-tab="tabCompletionLog">
+      Completion Log <span class="nav-tab-badge" id="badgeLogCount">0</span>
     </button>
-    <button class="nav-tab" data-tab="tabManagerDashboard">
-      Manager Control Tower <span class="tab-badge" id="badgeOverdueCount" style="color:#f87171;">0</span>
+    <button class="nav-tab-btn" data-tab="tabManagerDashboard">
+      Manager Dashboard <span class="nav-tab-badge" id="badgeOverdueCount" style="color:var(--allo-red);">0</span>
     </button>
-    <button class="nav-tab" data-tab="tabNotificationLog">
-      Notification Log <span class="tab-badge" id="badgeNotifCount">0</span>
+    <button class="nav-tab-btn" data-tab="tabNotificationLog">
+      Notification Log <span class="nav-tab-badge" id="badgeNotifCount">0</span>
     </button>
-    <button class="nav-tab" data-tab="tabSettings">
-      SLA Settings
+    <button class="nav-tab-btn" data-tab="tabSettings">
+      SLA Governance
     </button>
-    <button class="nav-tab" data-tab="tabTests" style="color:var(--aws-orange); font-weight:600;">
-      Automated Test Suite (8)
+    <button class="nav-tab-btn" data-tab="tabTests" style="color:var(--allo-green-dark); font-weight:700;">
+      Verified Test Suite (8)
     </button>
   </nav>
 
-  <!-- Main Container -->
-  <main class="container">
+  <!-- Main Content Page -->
+  <main class="page-container">
 
-    <!-- KPI Metric Cards (AWS Enterprise Cloud Style) -->
-    <section class="kpi-grid">
-      <div class="kpi-card kpi-blue">
-        <div class="kpi-header">
-          <span class="kpi-title">Active Cycles</span>
-          <span style="color:var(--aws-blue); font-size:16px;">⟳</span>
-        </div>
-        <div class="kpi-val" id="statTotalActive">4</div>
-        <div class="kpi-footer" style="color:var(--text-muted);">
-          <span>Scheduled & Active</span>
+    <!-- Allo Operations KPI Overview (Allo Style Circular Category Cards) -->
+    <section class="ops-kpi-grid">
+      <div class="ops-kpi-card">
+        <div class="kpi-circle-icon kpi-circle-active">📦</div>
+        <div class="kpi-body">
+          <p>Active Task Cycles</p>
+          <h3 id="statTotalActive">4</h3>
+          <span class="kpi-subtext">Cookware & Dispatch Ops</span>
         </div>
       </div>
 
-      <div class="kpi-card kpi-green">
-        <div class="kpi-header">
-          <span class="kpi-title">Cycles Completed</span>
-          <span style="color:#10b981; font-size:16px;">✓</span>
-        </div>
-        <div class="kpi-val" id="statTotalCompleted">0</div>
-        <div class="kpi-footer" style="color:#34d399;" id="statCompletedRate">
-          <span>0% Audit Verified</span>
+      <div class="ops-kpi-card">
+        <div class="kpi-circle-icon">✓</div>
+        <div class="kpi-body">
+          <p>Cycles Completed</p>
+          <h3 id="statTotalCompleted">0</h3>
+          <span class="kpi-subtext" id="statCompletedRate">0% Verified</span>
         </div>
       </div>
 
-      <div class="kpi-card kpi-orange">
-        <div class="kpi-header">
-          <span class="kpi-title">Overdue (Level 1 Alert)</span>
-          <span style="color:var(--aws-orange); font-size:16px;">⚠</span>
-        </div>
-        <div class="kpi-val" id="statOverdue" style="color:#f59e0b;">0</div>
-        <div class="kpi-footer" style="color:var(--aws-orange);">
-          <span>Same-Day Manager Alert</span>
+      <div class="ops-kpi-card">
+        <div class="kpi-circle-icon kpi-circle-overdue">⚠</div>
+        <div class="kpi-body">
+          <p>Overdue (Level 1 Alert)</p>
+          <h3 id="statOverdue" style="color:var(--allo-red);">0</h3>
+          <span class="kpi-subtext" style="color:var(--allo-red);">Same-Day Manager Alert</span>
         </div>
       </div>
 
-      <div class="kpi-card kpi-red">
-        <div class="kpi-header">
-          <span class="kpi-title">Leadership Escalation</span>
-          <span style="color:#ef4444; font-size:16px;">🚨</span>
-        </div>
-        <div class="kpi-val" id="statEscalated" style="color:#f87171;">0</div>
-        <div class="kpi-footer" style="color:#f87171;">
-          <span>SLA Breach (>24h Unresolved)</span>
+      <div class="ops-kpi-card">
+        <div class="kpi-circle-icon kpi-circle-escalated">🚨</div>
+        <div class="kpi-body">
+          <p>Leadership Escalation</p>
+          <h3 id="statEscalated" style="color:#c2185b;">0</h3>
+          <span class="kpi-subtext" style="color:#c2185b;">Founder SLA Breach (>24h)</span>
         </div>
       </div>
     </section>
 
-    <!-- 1. Employee Console Tab (Single-Point Interface) -->
+    <!-- 1. Employee Operating Console (Single-Point Interface) -->
     <section id="tabEmployeeReport" class="tab-pane active">
       <div class="section-header">
-        <div>
-          <h2 class="section-title">Employee Operating Console</h2>
-          <p class="section-subtitle">Single-point updating: View your pending tasks, enter Ticket ID or WhatsApp update verification, and mark complete.</p>
+        <div class="section-heading-group">
+          <h2>Employee Operating Console</h2>
+          <p>Single-point updating: View your assigned recurring duties, submit Ticket ID or WhatsApp update verification, and mark complete.</p>
         </div>
       </div>
 
-      <div class="table-card">
-        <div class="table-toolbar">
-          <div class="search-input-box">
-            <span style="color:var(--text-muted); margin-right:8px;">🔍</span>
-            <input type="text" id="employeeSearchInput" placeholder="Filter by Task ID, name, or assignee...">
+      <div class="allo-card">
+        <div class="allo-card-header">
+          <div class="allo-search-wrap">
+            <span style="color:var(--allo-text-muted); margin-right:8px;">🔍</span>
+            <input type="text" id="employeeSearchInput" placeholder="Search tasks, IDs, or assignees...">
           </div>
-          <div class="filter-pills" id="employeeFilterPills">
-            <button class="filter-btn active" data-filter="All">All Assignees</button>
-            <button class="filter-btn" data-filter="Employee A">Employee A (Daily)</button>
-            <button class="filter-btn" data-filter="Employee B">Employee B (7d)</button>
-            <button class="filter-btn" data-filter="Employee C">Employee C (15d)</button>
-            <button class="filter-btn" data-filter="Employee D">Employee D (30d)</button>
+          <div class="filter-pills-row" id="employeeFilterPills">
+            <button class="allo-pill-btn active" data-filter="All">All Operations</button>
+            <button class="allo-pill-btn" data-filter="Employee A">Employee A (Daily Ops)</button>
+            <button class="allo-pill-btn" data-filter="Employee B">Employee B (Portal 7d)</button>
+            <button class="allo-pill-btn" data-filter="Employee C">Employee C (Portal 15d)</button>
+            <button class="allo-pill-btn" data-filter="Employee D">Employee D (Portal 30d)</button>
           </div>
         </div>
 
@@ -146,13 +148,13 @@
               <tr>
                 <th>Task ID</th>
                 <th>Cycle Key</th>
-                <th>Task Description</th>
+                <th>Operational Duty</th>
                 <th>Assignee</th>
                 <th>Cadence</th>
                 <th>Due Deadline</th>
                 <th>Status</th>
                 <th>Required Proof</th>
-                <th>Enter Proof / Ticket ID</th>
+                <th>Enter Verification Proof / Ticket ID</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -164,16 +166,16 @@
       </div>
     </section>
 
-    <!-- 2. Task Master Tab -->
+    <!-- 2. Task Master Registry Tab -->
     <section id="tabTaskMaster" class="tab-pane">
       <div class="section-header">
-        <div>
-          <h2 class="section-title">Recurring Task Master Registry</h2>
-          <p class="section-subtitle">Master state of recurring operational tasks and active cycle trackers.</p>
+        <div class="section-heading-group">
+          <h2>Recurring Task Master Registry</h2>
+          <p>Master configuration of operational recurring cadences, active iteration numbers, and state flags for Allo Innoware.</p>
         </div>
       </div>
 
-      <div class="table-card">
+      <div class="allo-card">
         <div class="table-responsive">
           <table>
             <thead>
@@ -203,17 +205,17 @@
     <!-- 3. Completion Log Tab -->
     <section id="tabCompletionLog" class="tab-pane">
       <div class="section-header">
-        <div>
-          <h2 class="section-title">Immutable Task Completion Log</h2>
-          <p class="section-subtitle">Permanent audit trail of all finished task iterations with submitted proof and turnaround performance.</p>
+        <div class="section-heading-group">
+          <h2>Immutable Task Completion Log</h2>
+          <p>Permanent historical ledger of completed operational cycles, turnaround times, and verified proof.</p>
         </div>
         <div style="display:flex; gap:8px;">
-          <button id="btnExportCsv" class="btn btn-sm">Export CSV</button>
-          <button id="btnExportJson" class="btn btn-sm">Export JSON</button>
+          <button id="btnExportCsv" class="btn btn-sm">📥 Export CSV</button>
+          <button id="btnExportJson" class="btn btn-sm">📄 Export JSON</button>
         </div>
       </div>
 
-      <div class="table-card">
+      <div class="allo-card">
         <div class="table-responsive">
           <table>
             <thead>
@@ -221,11 +223,11 @@
                 <th>Completion ID</th>
                 <th>Cycle ID</th>
                 <th>Task ID</th>
-                <th>Task Name</th>
+                <th>Operational Task</th>
                 <th>Completed By</th>
                 <th>Iteration</th>
                 <th>Scheduled Due</th>
-                <th>Completed Timestamp</th>
+                <th>Completed At</th>
                 <th>Submitted Verification Proof</th>
                 <th>Turnaround Status</th>
               </tr>
@@ -241,10 +243,10 @@
     <!-- 4. Manager Control Tower Tab -->
     <section id="tabManagerDashboard" class="tab-pane">
       <div class="grid-2">
-        <!-- Live Overdue & Escalation Watchlist -->
-        <div class="table-card">
-          <div class="table-toolbar">
-            <strong style="font-size:13px; color:#ffffff;">Active Overdue & Escalation Watchlist</strong>
+        <!-- Live Watchlist -->
+        <div class="allo-card">
+          <div class="allo-card-header" style="background:#fafcf8;">
+            <strong style="font-size:13px; color:var(--allo-text);">⚠️ Active Overdue & Escalation Watchlist</strong>
             <span class="badge badge-overdue" id="watchlistCountBadge">0 Flagged</span>
           </div>
           <div class="table-responsive">
@@ -268,9 +270,9 @@
         <!-- Manager Action Desk -->
         <div class="form-card">
           <div class="section-header" style="margin-bottom:12px;">
-            <div>
-              <h3 class="section-title" style="font-size:14px;">Manager Action & Acknowledgement Desk</h3>
-              <p class="section-subtitle">Log reviews, grant 24h operational waivers, or resolve tasks.</p>
+            <div class="section-heading-group">
+              <h3 style="font-size:15px; color:var(--allo-text);">⚡ Manager Review & Acknowledgement Desk</h3>
+              <p>Review flagged duties, grant 24h operational waivers, or log resolutions.</p>
             </div>
           </div>
 
@@ -293,11 +295,11 @@
 
             <div class="form-group">
               <label for="mgrRemarks">Manager Action Notes / Plan:</label>
-              <input type="text" id="mgrRemarks" placeholder="e.g. Spoke to assignee, client portal API was down; resolving by 11 AM">
+              <input type="text" id="mgrRemarks" placeholder="e.g. Borosilicate packaging delayed; resolving by 11 AM">
             </div>
 
-            <button type="submit" id="btnSubmitManagerReview" class="btn btn-primary" style="width:100%;">
-              Submit Manager Decision
+            <button type="submit" id="btnSubmitManagerReview" class="btn btn-allo-green" style="width:100%; justify-content:center; padding:10px;">
+              Submit Manager Review
             </button>
           </form>
         </div>
@@ -307,13 +309,13 @@
     <!-- 5. Notification Log Tab -->
     <section id="tabNotificationLog" class="tab-pane">
       <div class="section-header">
-        <div>
-          <h2 class="section-title">Notification & Escalation Audit Ledger</h2>
-          <p class="section-subtitle">Tracks all automated alerts, reminders, and leadership escalations. Prevents duplicate dispatches.</p>
+        <div class="section-heading-group">
+          <h2>Notification & Escalation Audit Ledger</h2>
+          <p>Audits all automated manager alerts, reminders, and leadership escalations. Prevents duplicate notifications.</p>
         </div>
       </div>
 
-      <div class="table-card">
+      <div class="allo-card">
         <div class="table-responsive">
           <table>
             <thead>
@@ -342,9 +344,9 @@
     <section id="tabSettings" class="tab-pane">
       <div class="form-card" style="max-width:650px;">
         <div class="section-header" style="margin-bottom:16px;">
-          <div>
-            <h2 class="section-title">Operational Governance & SLA Settings</h2>
-            <p class="section-subtitle">Configurable parameters for deadlines, alerts, and escalation triggers.</p>
+          <div class="section-heading-group">
+            <h2>Operational SLA Governance Settings</h2>
+            <p>Configurable thresholds for workday cutoffs, manager alerts, and leadership escalations.</p>
           </div>
         </div>
 
@@ -384,54 +386,61 @@
             <input type="text" id="settingLeadershipEmail" value="hr.ops.allo@gmail.com">
           </div>
 
-          <button type="submit" id="btnSaveSettings" class="btn btn-primary" style="margin-top:8px;">
-            Save Governance Settings
+          <button type="submit" id="btnSaveSettings" class="btn btn-allo-green" style="margin-top:8px;">
+            Save Governance Rules
           </button>
         </form>
       </div>
     </section>
 
-    <!-- 7. Automated Test Suite Tab (All 8 Tests) -->
+    <!-- 7. Verified Test Suite Tab (All 8 Tests) -->
     <section id="tabTests" class="tab-pane">
-      <div class="test-summary-box">
+      <div class="test-suite-header-card">
         <div>
-          <h2 class="section-title">Automated 8-Scenario Verification Suite</h2>
-          <p class="section-subtitle">Runs end-to-end operational verification across all 8 assignment requirements defined by Allo Innoware.</p>
-          <div class="progress-bar-wrap">
-            <div id="testProgressBar" class="progress-bar-fill"></div>
+          <h2>Allo Innoware 8-Scenario Automated Test Suite</h2>
+          <p style="font-size:12px; color:var(--allo-text-muted); margin-top:2px;">
+            Executes and verifies all 8 operational requirements defined in the Allo Innoware assignment brief.
+          </p>
+          <div class="test-progress-track">
+            <div id="testProgressBar" class="test-progress-fill"></div>
           </div>
         </div>
-        <button id="btnRunAllTests" class="btn btn-primary" style="font-size:13px; padding:10px 18px;">
-          Execute All 8 Verification Tests
+        <button id="btnRunAllTests" class="btn btn-allo-green" style="font-size:13px; padding:10px 20px;">
+          ▶ Execute All 8 Verification Tests
         </button>
       </div>
 
-      <div class="test-grid" id="testResultsList">
+      <div class="test-cards-grid" id="testResultsList">
         <!-- Test result cards populated dynamically -->
       </div>
     </section>
 
   </main>
 
+  <!-- Floating WhatsApp Quick Button (Matches alloinnoware.com bottom right WhatsApp widget) -->
+  <button class="floating-whatsapp-btn" id="btnFloatingWhatsApp" title="Allo Innoware Daily WhatsApp Update Quick Logger">
+    💬
+  </button>
+
   <!-- Interactive Email Preview Modal -->
-  <div class="modal-overlay" id="emailModal">
-    <div class="modal-content">
+  <div class="modal-backdrop" id="emailModal">
+    <div class="modal-card">
       <div class="modal-header">
-        <strong id="modalEmailSubject" style="font-size:13px; color:#ffffff;">Email Notification Preview</strong>
+        <strong id="modalEmailSubject" style="font-size:13px; color:var(--allo-text);">Email Notification Preview</strong>
         <button id="btnModalClose" class="btn btn-sm" style="padding:2px 8px;">✕</button>
       </div>
       <div class="modal-body" id="modalEmailBody">
         <!-- Rendered email HTML -->
       </div>
       <div class="modal-footer">
-        <button id="btnModalCloseFooter" class="btn btn-primary btn-sm">Close Preview</button>
+        <button id="btnModalCloseFooter" class="btn btn-allo-green btn-sm">Close Preview</button>
       </div>
     </div>
   </div>
 
   <!-- Notification Toast -->
   <div id="toast">
-    <span style="color:#10b981;">✓</span>
+    <span style="color:var(--allo-green);">✓</span>
     <span id="toastMsg">Action completed successfully</span>
   </div>
 
