@@ -3,75 +3,153 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Allo Innoware - Task Operations Engine</title>
+  <title>Allo Innoware - Operations Control Tower & Task Engine</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <!-- Top Header Bar -->
+  <!-- Top Navigation Header -->
   <header class="top-header">
-    <div class="brand">
-      <span>Allo Innoware</span>
-      <span class="brand-badge">Ops Engine v2.4</span>
+    <div class="brand-section">
+      <div class="logo-badge">AI</div>
+      <div class="brand-titles">
+        <h1>Allo Innoware</h1>
+        <p>AI Operations / Founder's Office Sentinel Engine</p>
+      </div>
     </div>
+
+    <!-- Live Cutoff Countdown Widget -->
+    <div class="header-center">
+      <div class="countdown-box" title="Real-time countdown to daily 18:00 IST task cutoff">
+        <span class="pulse-dot"></span>
+        <span>18:00 IST Cutoff:</span>
+        <strong id="cutoffCountdownText">--:--:--</strong>
+      </div>
+    </div>
+
+    <!-- Global Operational Action Buttons -->
     <div class="header-actions">
-      <button id="btnCheckOverdue" class="btn" title="Check deadlines and send alerts">Check Overdue Tasks</button>
-      <button id="btnResetData" class="btn" title="Reset sample test tasks">Reset Sample Data</button>
+      <button id="btnCheckOverdue" class="btn btn-primary" title="Evaluate deadlines, fire manager alerts, and check 24h SLA escalations">
+        ⚡ Check Overdue & SLAs
+      </button>
+      <button id="btnSimulateOverdue" class="btn" title="Simulate an overdue scenario for Employee C to test manager alert">
+        🧪 Inject Overdue Test
+      </button>
+      <button id="btnResetData" class="btn btn-danger btn-sm" title="Reset all task cycles to initial default state">
+        ↺ Reset Data
+      </button>
     </div>
   </header>
 
-  <!-- Navigation Tabs -->
+  <!-- Navigation Tab Bar -->
   <nav class="nav-bar">
-    <button class="nav-tab active" data-tab="tabEmployeeReport">Employee Report</button>
-    <button class="nav-tab" data-tab="tabTaskMaster">Task Master</button>
-    <button class="nav-tab" data-tab="tabCompletionLog">Completion Log</button>
-    <button class="nav-tab" data-tab="tabManagerDashboard">Manager Dashboard</button>
-    <button class="nav-tab" data-tab="tabNotificationLog">Notification Log</button>
-    <button class="nav-tab" data-tab="tabSettings">Settings & SLA</button>
-    <button class="nav-tab" data-tab="tabTests">Run 8 Tests</button>
+    <button class="nav-tab active" data-tab="tabEmployeeReport">
+      📋 Employee Console
+    </button>
+    <button class="nav-tab" data-tab="tabTaskMaster">
+      ⚙️ Task Master <span class="tab-badge" id="badgeTaskCount">4</span>
+    </button>
+    <button class="nav-tab" data-tab="tabCompletionLog">
+      📜 Completion Log <span class="tab-badge" id="badgeLogCount">0</span>
+    </button>
+    <button class="nav-tab" data-tab="tabManagerDashboard">
+      📊 Manager Control Tower <span class="tab-badge" id="badgeOverdueCount" style="color:#b91c1c;">0</span>
+    </button>
+    <button class="nav-tab" data-tab="tabNotificationLog">
+      🔔 Notification Log <span class="tab-badge" id="badgeNotifCount">0</span>
+    </button>
+    <button class="nav-tab" data-tab="tabSettings">
+      ⚙️ SLA Settings
+    </button>
+    <button class="nav-tab" data-tab="tabTests" style="color:#4f46e5; font-weight:600;">
+      🧪 Automated Test Suite (8)
+    </button>
   </nav>
 
-  <!-- Main Content Container -->
+  <!-- Main Container -->
   <main class="container">
 
-    <!-- 1. Employee Report Tab (Primary Employee Interface) -->
+    <!-- KPI Metrics Banner -->
+    <section class="kpi-grid">
+      <div class="kpi-card kpi-indigo">
+        <div class="kpi-icon">📋</div>
+        <div class="kpi-info">
+          <p>Active Task Cycles</p>
+          <h3 id="statTotalActive">4</h3>
+          <span class="kpi-tag">100% Tracking Active</span>
+        </div>
+      </div>
+      <div class="kpi-card kpi-emerald">
+        <div class="kpi-icon">✅</div>
+        <div class="kpi-info">
+          <p>Cycles Completed</p>
+          <h3 id="statTotalCompleted">0</h3>
+          <span class="kpi-tag" id="statCompletedRate">0% SLA Met</span>
+        </div>
+      </div>
+      <div class="kpi-card kpi-amber">
+        <div class="kpi-icon">⚠️</div>
+        <div class="kpi-info">
+          <p>Overdue Tasks (Level 1)</p>
+          <h3 id="statOverdue">0</h3>
+          <span class="kpi-tag">Same-Day Manager Alert</span>
+        </div>
+      </div>
+      <div class="kpi-card kpi-rose">
+        <div class="kpi-icon">🚨</div>
+        <div class="kpi-info">
+          <p>Leadership Escalated</p>
+          <h3 id="statEscalated">0</h3>
+          <span class="kpi-tag">Level 2 SLA Breached (>24h)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. Employee Console Tab (Single-Point Execution) -->
     <section id="tabEmployeeReport" class="tab-pane active">
       <div class="section-header">
         <div>
-          <h2 class="section-title">Employee Operating Report</h2>
-          <p class="section-subtitle">Single-point view: View pending tasks, enter Ticket ID or WhatsApp update, and click Complete.</p>
-        </div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <label for="employeeFilter" style="margin-bottom:0;">Filter Employee:</label>
-          <select id="employeeFilter">
-            <option value="All">All Employees</option>
-            <option value="Employee A">Employee A</option>
-            <option value="Employee B">Employee B</option>
-            <option value="Employee C">Employee C</option>
-            <option value="Employee D">Employee D</option>
-          </select>
+          <h2 class="section-title">Employee Operating Console</h2>
+          <p class="section-subtitle">Single-point updating: View your pending tasks, enter Ticket ID or WhatsApp update verification, and mark complete.</p>
         </div>
       </div>
 
-      <div class="table-wrapper">
-        <table id="employeeReportTable">
-          <thead>
-            <tr>
-              <th>Task ID</th>
-              <th>Cycle ID</th>
-              <th>Task Name</th>
-              <th>Assigned To</th>
-              <th>Due Date</th>
-              <th>Status</th>
-              <th>Proof Required</th>
-              <th>Ticket ID / Proof Input</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="employeeReportBody">
-            <!-- Populated dynamically -->
-          </tbody>
-        </table>
+      <div class="table-card">
+        <div class="table-toolbar">
+          <div class="search-input-box">
+            <span style="color:#94a3b8; margin-right:6px;">🔍</span>
+            <input type="text" id="employeeSearchInput" placeholder="Search tasks, IDs, or assignees...">
+          </div>
+          <div class="filter-pills" id="employeeFilterPills">
+            <button class="filter-btn active" data-filter="All">All Assignees</button>
+            <button class="filter-btn" data-filter="Employee A">Employee A (Daily)</button>
+            <button class="filter-btn" data-filter="Employee B">Employee B (7d)</button>
+            <button class="filter-btn" data-filter="Employee C">Employee C (15d)</button>
+            <button class="filter-btn" data-filter="Employee D">Employee D (30d)</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Task ID</th>
+                <th>Cycle Key</th>
+                <th>Task Description</th>
+                <th>Assignee</th>
+                <th>Cadence</th>
+                <th>Due Deadline</th>
+                <th>Status</th>
+                <th>Required Proof</th>
+                <th>Enter Proof / Ticket ID</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="employeeReportBody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -79,33 +157,35 @@
     <section id="tabTaskMaster" class="tab-pane">
       <div class="section-header">
         <div>
-          <h2 class="section-title">Task Master Configuration</h2>
-          <p class="section-subtitle">Master state of recurring operational tasks and active cycle trackers.</p>
+          <h2 class="section-title">Recurring Task Master Registry</h2>
+          <p class="section-subtitle">Core configuration of recurring cadences, active iteration numbers, and state flags.</p>
         </div>
       </div>
 
-      <div class="table-wrapper">
-        <table id="taskMasterTable">
-          <thead>
-            <tr>
-              <th>Task ID</th>
-              <th>Task Name</th>
-              <th>Assigned To</th>
-              <th>Frequency</th>
-              <th>Start Date</th>
-              <th>Due Date</th>
-              <th>Required Proof</th>
-              <th>Status</th>
-              <th>Cycle #</th>
-              <th>Cycle ID</th>
-              <th>Alert Sent</th>
-              <th>Manager Ack</th>
-            </tr>
-          </thead>
-          <tbody id="taskMasterBody">
-            <!-- Populated dynamically -->
-          </tbody>
-        </table>
+      <div class="table-card">
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Task ID</th>
+                <th>Task Name</th>
+                <th>Assigned Employee</th>
+                <th>Frequency</th>
+                <th>Cycle Start</th>
+                <th>Due Date</th>
+                <th>Proof Type</th>
+                <th>Status</th>
+                <th>Cycle #</th>
+                <th>Active Cycle ID</th>
+                <th>Manager Alert</th>
+                <th>Manager Ack</th>
+              </tr>
+            </thead>
+            <tbody id="taskMasterBody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -113,108 +193,101 @@
     <section id="tabCompletionLog" class="tab-pane">
       <div class="section-header">
         <div>
-          <h2 class="section-title">Completion Log (Audit Trail)</h2>
-          <p class="section-subtitle">Immutable historical ledger of all completed cycles.</p>
+          <h2 class="section-title">Immutable Task Completion Log</h2>
+          <p class="section-subtitle">Permanent audit trail of all finished task iterations with submitted proof and turnaround performance.</p>
         </div>
-        <button id="btnExportCsv" class="btn btn-sm">Export CSV</button>
+        <div style="display:flex; gap:8px;">
+          <button id="btnExportCsv" class="btn btn-sm">📥 Export CSV</button>
+          <button id="btnExportJson" class="btn btn-sm">📄 Export JSON</button>
+        </div>
       </div>
 
-      <div class="table-wrapper">
-        <table id="completionLogTable">
-          <thead>
-            <tr>
-              <th>Completion ID</th>
-              <th>Cycle ID</th>
-              <th>Task ID</th>
-              <th>Task Name</th>
-              <th>Completed By</th>
-              <th>Cycle #</th>
-              <th>Due Date</th>
-              <th>Completed At</th>
-              <th>Proof Submitted</th>
-              <th>Turnaround Status</th>
-            </tr>
-          </thead>
-          <tbody id="completionLogBody">
-            <!-- Populated dynamically -->
-          </tbody>
-        </table>
+      <div class="table-card">
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Completion ID</th>
+                <th>Cycle ID</th>
+                <th>Task ID</th>
+                <th>Task Name</th>
+                <th>Completed By</th>
+                <th>Iteration</th>
+                <th>Scheduled Due</th>
+                <th>Completed Timestamp</th>
+                <th>Submitted Verification Proof</th>
+                <th>Turnaround Status</th>
+              </tr>
+            </thead>
+            <tbody id="completionLogBody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
-    <!-- 4. Manager Dashboard Tab -->
+    <!-- 4. Manager Control Tower Tab -->
     <section id="tabManagerDashboard" class="tab-pane">
       <div class="grid-2">
-        <!-- Summary Stats Table -->
-        <div class="card">
-          <div class="section-header">
-            <div>
-              <h2 class="section-title">Operational Summary</h2>
-              <p class="section-subtitle">Live team status counters.</p>
-            </div>
+        <!-- Live Overdue & Escalation Watchlist -->
+        <div class="table-card">
+          <div class="table-toolbar" style="background:#f8fafc;">
+            <strong style="font-size:13px; color:#0f172a;">⚠️ Active Overdue & Escalation Watchlist</strong>
+            <span class="badge badge-overdue" id="watchlistCountBadge">0 Flagged</span>
           </div>
-          <div class="table-wrapper">
+          <div class="table-responsive">
             <table>
               <thead>
                 <tr>
-                  <th>Metric</th>
-                  <th>Count</th>
+                  <th>Task ID</th>
+                  <th>Assignee</th>
+                  <th>Due Date</th>
+                  <th>Status</th>
+                  <th>Manager Review</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>Total Active Tasks</td>
-                  <td id="statTotalActive" style="font-weight:600;">0</td>
-                </tr>
-                <tr>
-                  <td>Pending Today</td>
-                  <td id="statPendingToday" style="font-weight:600;">0</td>
-                </tr>
-                <tr>
-                  <td>Overdue Tasks</td>
-                  <td id="statOverdue" style="font-weight:600; color:#991b1b;">0</td>
-                </tr>
-                <tr>
-                  <td>Escalated to Leadership</td>
-                  <td id="statEscalated" style="font-weight:600; color:#be123c;">0</td>
-                </tr>
+              <tbody id="managerWatchlistBody">
+                <!-- Populated dynamically -->
               </tbody>
             </table>
           </div>
         </div>
 
         <!-- Manager Action Desk -->
-        <div class="card">
-          <div class="section-header">
+        <div class="form-card">
+          <div class="section-header" style="margin-bottom:12px;">
             <div>
-              <h2 class="section-title">Manager Review & Action Desk</h2>
-              <p class="section-subtitle">Acknowledge overdue items, grant 24h waivers, or resolve.</p>
+              <h3 class="section-title" style="font-size:14px;">⚡ Manager Action & Acknowledgement Desk</h3>
+              <p class="section-subtitle">Log reviews, grant 24h operational waivers, or resolve tasks.</p>
             </div>
           </div>
 
           <form id="managerActionForm">
             <div class="form-group">
-              <label for="mgrSelectTask">Select Task ID:</label>
+              <label for="mgrSelectTask">Select Task for Review:</label>
               <select id="mgrSelectTask">
                 <!-- Populated dynamically -->
               </select>
             </div>
 
             <div class="form-group">
-              <label for="mgrActionType">Action:</label>
+              <label for="mgrActionType">Review Action Decision:</label>
               <select id="mgrActionType">
-                <option value="Acknowledge & Follow Up">Acknowledge & Follow Up</option>
-                <option value="Waived / 24h Extension">Waived / 24h Extension</option>
-                <option value="Mark Resolved Manually">Mark Resolved Manually</option>
+                <option value="Acknowledge & Follow Up">Acknowledge & Follow Up (Record review & notify team)</option>
+                <option value="Waived / 24h Extension">Grant 24-Hour Waiver (Extends due date & pauses escalation)</option>
+                <option value="Mark Resolved Manually">Mark Resolved Manually (Manager verifies completion)</option>
               </select>
             </div>
 
             <div class="form-group">
-              <label for="mgrRemarks">Manager Remarks / Plan:</label>
-              <input type="text" id="mgrRemarks" placeholder="e.g. Portal was down, resolving by 10 AM">
+              <label for="mgrRemarks">Manager Action Notes / Plan:</label>
+              <input type="text" id="mgrRemarks" placeholder="e.g. Spoke to assignee, client portal API was down; resolving by 11 AM">
             </div>
 
-            <button type="submit" id="btnSubmitManagerReview" class="btn btn-primary" style="margin-top:8px;">Submit Review</button>
+            <button type="submit" id="btnSubmitManagerReview" class="btn btn-primary" style="width:100%;">
+              Submit Manager Decision
+            </button>
           </form>
         </div>
       </div>
@@ -224,57 +297,70 @@
     <section id="tabNotificationLog" class="tab-pane">
       <div class="section-header">
         <div>
-          <h2 class="section-title">Notification Log</h2>
-          <p class="section-subtitle">Audit record of alerts, reminders, and escalations. Prevents duplicates.</p>
+          <h2 class="section-title">Notification & Escalation Audit Ledger</h2>
+          <p class="section-subtitle">Tracks all automated alerts, reminders, and leadership escalations. Prevents duplicate dispatches.</p>
         </div>
       </div>
 
-      <div class="table-wrapper">
-        <table id="notificationLogTable">
-          <thead>
-            <tr>
-              <th>Notification ID</th>
-              <th>Timestamp</th>
-              <th>Cycle ID</th>
-              <th>Task Name</th>
-              <th>Recipient</th>
-              <th>Role</th>
-              <th>Alert Type</th>
-              <th>Reason</th>
-              <th>Delivery Status</th>
-            </tr>
-          </thead>
-          <tbody id="notificationLogBody">
-            <!-- Populated dynamically -->
-          </tbody>
-        </table>
+      <div class="table-card">
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Notification ID</th>
+                <th>Timestamp</th>
+                <th>Cycle Key</th>
+                <th>Task Name</th>
+                <th>Recipient</th>
+                <th>Tier</th>
+                <th>Trigger Event</th>
+                <th>Operational Reason</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="notificationLogBody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
     <!-- 6. Settings & SLA Tab -->
     <section id="tabSettings" class="tab-pane">
-      <div class="card" style="max-width: 600px;">
-        <div class="section-header">
+      <div class="form-card" style="max-width:650px;">
+        <div class="section-header" style="margin-bottom:16px;">
           <div>
-            <h2 class="section-title">Operational Settings & SLA Rules</h2>
-            <p class="section-subtitle">Configurable parameters for deadlines and escalations.</p>
+            <h2 class="section-title">Operational Governance & SLA Settings</h2>
+            <p class="section-subtitle">Configurable parameters for deadlines, alerts, and escalation triggers.</p>
           </div>
         </div>
 
         <form id="settingsForm">
-          <div class="form-group">
-            <label for="settingCutoffHour">Daily Task Cutoff Hour (24h format):</label>
-            <input type="number" id="settingCutoffHour" min="0" max="23" value="18">
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="settingCutoffHour">Daily Deadline Cutoff Hour (24h):</label>
+              <input type="number" id="settingCutoffHour" min="0" max="23" value="18">
+            </div>
+            <div class="form-group">
+              <label for="settingAlertDelayMins">Manager Alert Buffer (Mins):</label>
+              <input type="number" id="settingAlertDelayMins" min="0" max="120" value="30">
+            </div>
           </div>
 
-          <div class="form-group">
-            <label for="settingAlertDelayMins">Manager Alert Buffer (minutes post cutoff):</label>
-            <input type="number" id="settingAlertDelayMins" min="0" max="120" value="30">
-          </div>
-
-          <div class="form-group">
-            <label for="settingEscalationHours">Leadership Escalation SLA (hours post alert):</label>
-            <input type="number" id="settingEscalationHours" min="1" max="72" value="24">
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="settingEscalationHours">Leadership Escalation SLA (Hours):</label>
+              <input type="number" id="settingEscalationHours" min="1" max="72" value="24">
+            </div>
+            <div class="form-group">
+              <label for="settingSimulationMode">Dispatch Mode:</label>
+              <select id="settingSimulationMode">
+                <option value="true">Simulation Mode (Log & Preview Emails)</option>
+                <option value="false">Live Delivery Mode (Gmail Integration)</option>
+              </select>
+            </div>
           </div>
 
           <div class="form-group">
@@ -287,38 +373,56 @@
             <input type="text" id="settingLeadershipEmail" value="hr.ops.allo@gmail.com">
           </div>
 
-          <div class="form-group">
-            <label for="settingSimulationMode">Mode:</label>
-            <select id="settingSimulationMode">
-              <option value="true">Simulation Mode (Log alerts without sending live emails)</option>
-              <option value="false">Live Delivery Mode</option>
-            </select>
-          </div>
-
-          <button type="submit" id="btnSaveSettings" class="btn btn-primary" style="margin-top:8px;">Save Settings</button>
+          <button type="submit" id="btnSaveSettings" class="btn btn-primary" style="margin-top:8px;">
+            Save Governance Settings
+          </button>
         </form>
       </div>
     </section>
 
-    <!-- 7. Run 8 Tests Tab -->
+    <!-- 7. Automated Test Suite Tab (All 8 Tests) -->
     <section id="tabTests" class="tab-pane">
-      <div class="section-header">
+      <div class="test-summary-box">
         <div>
-          <h2 class="section-title">Assignment Automated Test Suite</h2>
-          <p class="section-subtitle">Executes and verifies all 8 test requirements from the Allo Innoware test brief.</p>
+          <h2 class="section-title">Automated 8-Scenario Verification Suite</h2>
+          <p class="section-subtitle">Runs end-to-end operational verification across all 8 assignment requirements defined by Allo Innoware.</p>
+          <div class="progress-bar-wrap">
+            <div id="testProgressBar" class="progress-bar-fill"></div>
+          </div>
         </div>
-        <button id="btnRunAllTests" class="btn btn-primary">Execute All 8 Tests</button>
+        <button id="btnRunAllTests" class="btn btn-primary" style="font-size:13px; padding:10px 18px;">
+          ▶ Execute All 8 Verification Tests
+        </button>
       </div>
 
-      <div id="testResultsList">
-        <!-- Test results populated dynamically -->
+      <div class="test-grid" id="testResultsList">
+        <!-- Test result cards populated dynamically -->
       </div>
     </section>
 
   </main>
 
-  <!-- Toast notification -->
-  <div id="toast">Action completed successfully</div>
+  <!-- Interactive Email Preview Modal -->
+  <div class="modal-overlay" id="emailModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <strong id="modalEmailSubject" style="font-size:14px; color:#0f172a;">Email Notification Preview</strong>
+        <button id="btnModalClose" class="btn btn-sm" style="padding:2px 8px;">✕</button>
+      </div>
+      <div class="modal-body" id="modalEmailBody">
+        <!-- Rendered email HTML -->
+      </div>
+      <div class="modal-footer">
+        <button id="btnModalCloseFooter" class="btn btn-primary btn-sm">Close Preview</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast">
+    <span>✓</span>
+    <span id="toastMsg">Action completed successfully</span>
+  </div>
 
   <script src="app.js"></script>
 </body>
