@@ -20,10 +20,34 @@ function onOpen() {
   ui.createMenu("Task Operations")
     .addItem("Refresh Employee View", "refreshEmployeeReport")
     .addItem("Check Overdue Tasks", "checkOverdueAndSendAlerts")
+    .addItem("Install Hourly Auto-Trigger", "setupAutomaticTriggers")
     .addSeparator()
     .addItem("Run 8 Assignment Tests", "runAllTests")
     .addItem("Reset / Initialize Sheets", "setupSheets")
     .addToUi();
+}
+
+/**
+ * Installs an hourly time-driven trigger for checkOverdueAndSendAlerts
+ * after removing any existing duplicate triggers.
+ */
+function setupAutomaticTriggers() {
+  var triggers = ScriptApp.getProjectTriggers();
+  for (var i = 0; i < triggers.length; i++) {
+    if (triggers[i].getHandlerFunction() === "checkOverdueAndSendAlerts") {
+      ScriptApp.deleteTrigger(triggers[i]);
+    }
+  }
+  ScriptApp.newTrigger("checkOverdueAndSendAlerts")
+    .timeBased()
+    .everyHours(1)
+    .create();
+
+  SpreadsheetApp.getActiveSpreadsheet().toast(
+    "Hourly trigger installed for checkOverdueAndSendAlerts.",
+    "Automation Active",
+    4
+  );
 }
 
 /**
